@@ -10,6 +10,7 @@ public:
 	{
 		this->radius = radius;
 	}
+	~Circle();
 	Circle();
 	Circle(int radius)
 	{
@@ -21,37 +22,40 @@ private:
 
 double Circle::getArea()
 {
-	area = 3.14 * radius * radius;	
+	area = 3.14 * radius * radius;
 	return area;
 }
 
-Circle::Circle()
+Circle::Circle() : Circle(5)
 {
 	cout << "Circle 객체 생성" << endl;
 }
 
+Circle::~Circle()
+{
+	cout << "소멸자 호출" << this << "\n";
+}
+class Singleton {
+public:
+	static Singleton &GetInstance() {
+		if (instance_ == NULL)
+			instance_ = new Singleton();
+		return *instance_;
+	}
+	int testNumber = 5;
+private:
+	Singleton() {}
+	static Singleton* instance_;
+};
 int main()
 {
-	//double a = 3.7;
-	//double b = 7.3;
-
-	//*(int*)&a = *(int*)&a ^ *(int*)&b;
-	//*(int*)&b = *(int*)&a ^ *(int*)&b;
-	//*(int*)&a = *(int*)&a ^ *(int*)&b;
-	//cout << a << " " << b << endl;
-
-	//float a = 3.7;
-	//float b = 7.3;
-
-	//*(int*)&a = *(int*)&a ^ *(int*)&b;
-	//*(int*)&b = *(int*)&a ^ *(int*)&b;
-	//*(int*)&a = *(int*)&a ^ *(int*)&b;
-	//cout << a << " " << b << endl;
-	
-	Circle circle;
-	circle.setRadius(5);
-
-	Circle circle_instance = Circle(5);
-	cout << circle.getArea() << "<- circle's Area\n" << circle_instance.getArea() << " <- 생성자 테스트" << endl;
+	//Circle circle;
+	//circle.setRadius(5);
+	//Circle circle_instance = Circle(5);
+	//cout << circle.getArea() << " <- circle's Area\n" << circle_instance.getArea() 
+	//	<< " <- 생성자 테스트" << endl;
+	Singleton singleton = Singleton::GetInstance();
+	cout << singleton.testNumber << " singleton Works";
+	return 0;
 }
 
