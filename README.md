@@ -18,3 +18,8 @@ p = &n;
 짤막하게 호출되는 함수에 대해 오히려 한 줄 실행보다 함수를 불러오고 다시 해당 명령어 실행된 줄로 돌아가는 과정이 더 걸리는 오버헤드가 발생
 그래서 그런 부분에 대해 함수호출 대신에 정말 함수 내부에 있는 코드를 삽입, 다만 getter/setter 같이 자주 호출되는 경우는 전반적인
 코드 크기를 증가시키는 단점이 있다.
+
+### 20-07-23
+https://www.udemy.com/course/unrealblueprint/
+https://www.udemy.com/course/unrealcourse/
+아래 두 강좌를 들으면서 그대로 따라가볼 생각
