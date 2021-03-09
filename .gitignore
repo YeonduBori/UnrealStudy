@@ -9,3 +9,8 @@ UdemyCppBasic/UdemyCppBasic.vcxproj
 UdemyCppBasic/UdemyCppBasic.vcxproj.filters
 UdemyCppBasic/UdemyCppBasic.vcxproj.user
 UdemyCppBasic.sln
+InfernCppUnreal/CppPractice/Basic_Cpp/Basic_Cpp/Debug/
+InfernCppUnreal/CppPractice/Basic_Cpp/Debug/
+*.vcxproj
+*.filters
+*.user
