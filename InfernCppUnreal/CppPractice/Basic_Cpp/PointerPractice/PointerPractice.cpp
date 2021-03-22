@@ -124,74 +124,132 @@ using namespace std;
 //#pragma endregion
 //	return 0;
 //}
+
+	//struct StatInfo
+	//{
+	//	int hp;
+	//	int attack;
+	//	int defence;
+	//};
+	//StatInfo globalInfo;
+	//
+	//void PrintInfo(StatInfo& info)
+	//{
+	//	cout << "hp : " << info.hp << endl;
+	//	cout << "attack : " << info.attack << endl;
+	//	cout << "defence : " << info.defence << endl;
+	//	//info.hp = 100; <- error
+	//}
+	//
+	//void PrintInfo(StatInfo* info)
+	//{
+	//	if (info == nullptr)
+	//		return; // NULL 체크
+	//
+	//	cout << "hp : " << info->hp << endl;
+	//	cout << "attack : " << info->attack << endl;
+	//	cout << "defence : " << info->defence << endl;
+	//
+	//	//별 뒤에 붙인다면
+	//	// StatInfo * const info
+	//	// info라는 바구니의 내용물(주소)를 바꿀 수 없음
+	//	// info는 주소값을 갖는 바구니 -> 이 주소값이 고정이다.
+	//	// info = &globalInfo; <- error
+	//
+	//	//별 이전에 붙인다면?
+	//	// const StatInfo* info
+	//	// info가 가리키고 있는 바구니의 내용물을 바꿀 수 없음
+	//	// 원격 바구니의 내용물을 바꿀 수 없음
+	//	// info->hp = 100; <- error
+	//	// 둘 다도 가능
+	//}
+	//
+	//int main()
+	//{
+	//	int number = 1;
+	//
+	//	cout << number << endl;
+	//	int* pointer = &number;
+	//	*pointer = 2;
+	//
+	//	cout << number << endl;
+	//	int& reference = number;
+	//	reference = 3;
+	//	// pointer로 가져다쓰거나 참조로 가져다쓰거나 같은 내용이다.
+	//	// 참조로 쓰는 경우에 포인터로 -> 접근이 아닌 .으로 사용 하지만 실제로는 주소값을 통해 원본 수정
+	//	cout << number << endl;
+	//	//원본수정을 방지하려면 const 키워드를 통해 개선 가능
+	//	StatInfo info;
+	//
+	//	StatInfo * pointer = &info;
+	//	StatInfo& reference = info;
+	//
+	//	//참조타입은 바구니의 별칭 같은 느낌 원본이 필요하다
+	//	//포인터는 주소라는 의미 고로 존재하지 않을 수도 있다.
+	//
+	//	StatInfo* statPointer = NULL;
+	//	statPointer = nullptr;
+	//	PrintInfo(*statPointer);
+	//	PrintInfo(statPointer);
+	//	//가독성 측면에서 #define OUT만을 써서 키워드만 이용하여 개선
+	//	return 0;
+	//}
 #pragma endregion
+
+#pragma region Array
 
 struct StatInfo
 {
-	int hp;
-	int attack;
-	int defence;
+	int hp = 0xAAAAAAAA;
+	int attack = 0xBBBBBBBB;
+	int defence = 0xDDDDDDDD;
 };
-StatInfo globalInfo;
 
-void PrintInfo(StatInfo& info)
+//배열은 넘기면 컴파일러가 포인터로 치환
+//배열 내용 전체를 넘긴 것이 아닌 시작 주소를 넘긴다.
+void Test(char a[])
 {
-	cout << "hp : " << info.hp << endl;
-	cout << "attack : " << info.attack << endl;
-	cout << "defence : " << info.defence << endl;
-	//info.hp = 100; <- error
-}
-
-void PrintInfo(StatInfo* info)
-{
-	if (info == nullptr)
-		return; // NULL 체크
-
-	cout << "hp : " << info->hp << endl;
-	cout << "attack : " << info->attack << endl;
-	cout << "defence : " << info->defence << endl;
-
-	//별 뒤에 붙인다면
-	// StatInfo * const info
-	// info라는 바구니의 내용물(주소)를 바꿀 수 없음
-	// info는 주소값을 갖는 바구니 -> 이 주소값이 고정이다.
-	// info = &globalInfo; <- error
-
-	//별 이전에 붙인다면?
-	// const StatInfo* info
-	// info가 가리키고 있는 바구니의 내용물을 바꿀 수 없음
-	// 원격 바구니의 내용물을 바꿀 수 없음
-	// info->hp = 100; <- error
-	// 둘 다도 가능
+	a[0] = 'x';
 }
 
 int main()
 {
-	int number = 1;
+	//배열의 크기는 상수여야함 VC 컴파일러 기준
+	const int monsterCount = 10;
+	StatInfo monsters[monsterCount];
 
-	cout << number << endl;
-	int* pointer = &number;
-	*pointer = 2;
+	StatInfo players[10];
 
-	cout << number << endl;
-	int& reference = number;
-	reference = 3;
-	// pointer로 가져다쓰거나 참조로 가져다쓰거나 같은 내용이다.
-	// 참조로 쓰는 경우에 포인터로 -> 접근이 아닌 .으로 사용 하지만 실제로는 주소값을 통해 원본 수정
-	cout << number << endl;
-	//원본수정을 방지하려면 const 키워드를 통해 개선 가능
-	StatInfo info;
+	//players = monsters;
+	//auto C++ 11에 등장 
+	//배열의 이름은 곧 배열의 시작주소
+	//시작위치를 가리키는 TYPE* 포인터
+	auto WhoAmI = monsters;
 
-	StatInfo * pointer = &info;
-	StatInfo& reference = info;
+	StatInfo* monster_0 = monsters;
+	monster_0->hp = 100;
+	monster_0->attack = 10;
+	monster_0->defence = 1;
 
-	//참조타입은 바구니의 별칭 같은 느낌 원본이 필요하다
-	//포인터는 주소라는 의미 고로 존재하지 않을 수도 있다.
+	StatInfo* monsters_1 = monsters + 1;//monsters[1];
+	monsters_1->hp = 200;
+	monsters_1->attack = 20;
+	monsters_1->defence = 2;
 
-	StatInfo* statPointer = NULL;
-	statPointer = nullptr;
-	PrintInfo(*statPointer);
-	PrintInfo(statPointer);
-	//가독성 측면에서 #define OUT만을 써서 키워드만 이용하여 개선
+	//monsters[2]의 참조 원본을 수정할 수 있다.
+	StatInfo& monster_2 = *(monsters + 2);
+
+	//monsters[2]의 값복사가 일어난 형태로 temp가 생성
+	StatInfo temp = *(monsters + 2);
+
+
+	cout << "Hello World!" << endl;
+	char msg[] = { 'H', 'e', 'l', 'l', 'o', '\0' };
+	Test(msg);
+	cout << msg << endl;//바뀐다 msg가 xello
+	//메모리 상에서 보면 배열과 포인터는 다르다.
+	//배열 그자체가 만들어짐
+	//포인터는 주소 따로 있고 data 담긴 곳이 따로 있다.
 	return 0;
 }
+#pragma endregion
