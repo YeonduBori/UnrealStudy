@@ -1,4 +1,5 @@
 ﻿#include <iostream>
+#include <time.h>
 using namespace std;
 #pragma region pointer
 //struct Player
@@ -196,60 +197,180 @@ using namespace std;
 	//}
 #pragma endregion
 
-#pragma region Array
+//#pragma region Array
+//
+//struct StatInfo
+//{
+//	int hp = 0xAAAAAAAA;
+//	int attack = 0xBBBBBBBB;
+//	int defence = 0xDDDDDDDD;
+//};
+//
+////배열은 넘기면 컴파일러가 포인터로 치환
+////배열 내용 전체를 넘긴 것이 아닌 시작 주소를 넘긴다.
+//void Test(char a[])
+//{
+//	a[0] = 'x';
+//}
+//
+//int main()
+//{
+//	//배열의 크기는 상수여야함 VC 컴파일러 기준
+//	const int monsterCount = 10;
+//	StatInfo monsters[monsterCount];
+//
+//	StatInfo players[10];
+//
+//	//players = monsters;
+//	//auto C++ 11에 등장 
+//	//배열의 이름은 곧 배열의 시작주소
+//	//시작위치를 가리키는 TYPE* 포인터
+//	auto WhoAmI = monsters;
+//
+//	StatInfo* monster_0 = monsters;
+//	monster_0->hp = 100;
+//	monster_0->attack = 10;
+//	monster_0->defence = 1;
+//
+//	StatInfo* monsters_1 = monsters + 1;//monsters[1];
+//	monsters_1->hp = 200;
+//	monsters_1->attack = 20;
+//	monsters_1->defence = 2;
+//
+//	//monsters[2]의 참조 원본을 수정할 수 있다.
+//	StatInfo& monster_2 = *(monsters + 2);
+//
+//	//monsters[2]의 값복사가 일어난 형태로 temp가 생성
+//	StatInfo temp = *(monsters + 2);
+//
+//
+//	cout << "Hello World!" << endl;
+//	char msg[] = { 'H', 'e', 'l', 'l', 'o', '\0' };
+//	Test(msg);
+//	cout << msg << endl;//바뀐다 msg가 xello
+//	//메모리 상에서 보면 배열과 포인터는 다르다.
+//	//배열 그자체가 만들어짐
+//	//포인터는 주소 따로 있고 data 담긴 곳이 따로 있다.
+//	return 0;
+//}
+//#pragma endregion
 
-struct StatInfo
-{
-	int hp = 0xAAAAAAAA;
-	int attack = 0xBBBBBBBB;
-	int defence = 0xDDDDDDDD;
-};
+//#pragma region 로또 번호 생성기
+//void Swap(int& a, int& b)
+//{
+//	int temp = a;
+//	a = b;
+//	b = temp;
+//}
+//
+//
+////Bubble Sort
+//void Sort(int numbers[], int count)// or int* numbers
+//{
+//	for (int index = 0; index < count - 1; index++)
+//	{
+//		for (int j = index + 1; j < count; j++)
+//		{
+//			if (numbers[index] > numbers[j])
+//				Swap(numbers[index], numbers[j]);
+//		}
+//	}
+//}
+//
+//void ChooseLotto(int numbers[])
+//{
+//	srand((unsigned)time(0));
+//	int arrayCount = 6;
+//	
+//	for (int index = 0; index < arrayCount; index++)
+//	{
+//		int number = 0;
+//		bool isSame = false;
+//
+//		do 
+//		{
+//			number = rand() % 45 + 1;
+//			for (int j = index - 1; j >= 0; j--)
+//			{
+//				if (number == numbers[j])
+//				{
+//					isSame = true;
+//					break;
+//				}
+//				else
+//				{
+//					isSame = false;
+//				}
+//			}
+//		} while (isSame);
+//
+//		numbers[index] = number;
+//	}
+//
+//	Sort(numbers, arrayCount);
+//}
+//
+//int main()
+//{
+//	//int a = 1;
+//	//int b = 2;
+//	//Swap(a, b);
+//	//cout << a << ":" << b << endl;
+//
+//	int numbers[6] = {0,0,0,0,0,0};
+//	//Sort(numbers, sizeof(numbers)/sizeof(int));
+//	//cout << numbers << endl;
+//	ChooseLotto(numbers);
+//	for (int number = 0; number < 6; number++)
+//	{
+//		cout << "index[" << number << "] is " << numbers[number] << endl;
+//	}
+//	return 0;
+//}
+//#pragma endregion
 
-//배열은 넘기면 컴파일러가 포인터로 치환
-//배열 내용 전체를 넘긴 것이 아닌 시작 주소를 넘긴다.
-void Test(char a[])
+#pragma region 다중포인터
+
+void SetNumber(int* number)
 {
-	a[0] = 'x';
+	*number = 1;
+}
+
+void SetMessage(const char* a)
+{
+	a = "Bye";
+}
+
+void SetMessage(const char** a)
+{
+	*a = "Bye";
 }
 
 int main()
 {
-	//배열의 크기는 상수여야함 VC 컴파일러 기준
-	const int monsterCount = 10;
-	StatInfo monsters[monsterCount];
+	int a = 0;
+	SetNumber(&a);
 
-	StatInfo players[10];
+	//msg[주소] << 8바이트
+	//read only data에 [H][e][l][l][o][\0]
+	//read only Bye주소 [B][y][e][\0]
+	const char* msg = "Hello";
+	//[매개변수][Return][지역변수(msg(Hello 주소))][매개변수(a(Hello 주소))][Return][지역변수]
+	SetMessage(msg);
 
-	//players = monsters;
-	//auto C++ 11에 등장 
-	//배열의 이름은 곧 배열의 시작주소
-	//시작위치를 가리키는 TYPE* 포인터
-	auto WhoAmI = monsters;
-
-	StatInfo* monster_0 = monsters;
-	monster_0->hp = 100;
-	monster_0->attack = 10;
-	monster_0->defence = 1;
-
-	StatInfo* monsters_1 = monsters + 1;//monsters[1];
-	monsters_1->hp = 200;
-	monsters_1->attack = 20;
-	monsters_1->defence = 2;
-
-	//monsters[2]의 참조 원본을 수정할 수 있다.
-	StatInfo& monster_2 = *(monsters + 2);
-
-	//monsters[2]의 값복사가 일어난 형태로 temp가 생성
-	StatInfo temp = *(monsters + 2);
-
-
-	cout << "Hello World!" << endl;
-	char msg[] = { 'H', 'e', 'l', 'l', 'o', '\0' };
-	Test(msg);
-	cout << msg << endl;//바뀐다 msg가 xello
-	//메모리 상에서 보면 배열과 포인터는 다르다.
-	//배열 그자체가 만들어짐
-	//포인터는 주소 따로 있고 data 담긴 곳이 따로 있다.
+	cout << msg << endl;
+	//분석은 오른쪽에서 왼쪽으로
+	
+	//.rdata Hello주소 [H][e][l][l][o][\0]
+	//msg[ Hello주소 ] << 8바이트
+	//pp[ &msg ] << 8바이트
+	const char** pp = &msg;
+	//*pp = "Bye";
+	
+	//매개변수 리턴 지역변수(msg(Hello주소)) 매개변수(a(msg의 주소))
+	SetMessage(&msg);
+	cout << msg << endl;
 	return 0;
 }
+
 #pragma endregion
