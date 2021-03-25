@@ -329,48 +329,69 @@ using namespace std;
 //}
 //#pragma endregion
 
-#pragma region 다중포인터
+//#pragma region 다중포인터
+//
+//void SetNumber(int* number)
+//{
+//	*number = 1;
+//}
+//
+//void SetMessage(const char* a)
+//{
+//	a = "Bye";
+//}
+//
+//void SetMessage(const char** a)
+//{
+//	*a = "Bye";
+//}
+//
+//int main()
+//{
+//	int a = 0;
+//	SetNumber(&a);
+//
+//	//msg[주소] << 8바이트
+//	//read only data에 [H][e][l][l][o][\0]
+//	//read only Bye주소 [B][y][e][\0]
+//	const char* msg = "Hello";
+//	const char msgTest[] = {'T','E','S','T', '\0'};
+//	//[매개변수][Return][지역변수(msg(Hello 주소))][매개변수(a(Hello 주소))][Return][지역변수]
+//	SetMessage(msg);
+//
+//	cout << msg << endl;
+//
+//	cout << msgTest << endl;
+//	//분석은 오른쪽에서 왼쪽으로
+//	
+//	//.rdata Hello주소 [H][e][l][l][o][\0]
+//	//msg[ Hello주소 ] << 8바이트
+//	//pp[ &msg ] << 8바이트
+//	const char** pp = &msg;
+//	//*pp = "Bye";
+//	
+//	//매개변수 리턴 지역변수(msg(Hello주소)) 매개변수(a(msg의 주소))
+//	SetMessage(&msg);
+//	cout << msg << endl;
+//	return 0;
+//}
+//
+//#pragma endregion
 
-void SetNumber(int* number)
-{
-	*number = 1;
-}
-
-void SetMessage(const char* a)
-{
-	a = "Bye";
-}
-
-void SetMessage(const char** a)
-{
-	*a = "Bye";
-}
-
+#pragma region 다차원배열 ~ 포인터 마무리
 int main()
 {
-	int a = 0;
-	SetNumber(&a);
+	int apartment2D[2][5] = { {4,2,3,4,1},{1,1,5,2,2} };
 
-	//msg[주소] << 8바이트
-	//read only data에 [H][e][l][l][o][\0]
-	//read only Bye주소 [B][y][e][\0]
-	const char* msg = "Hello";
-	//[매개변수][Return][지역변수(msg(Hello 주소))][매개변수(a(Hello 주소))][Return][지역변수]
-	SetMessage(msg);
+	//2차배열 활용예시 로그라이크 2D 맵
+	int arr2[2][2] = { {1,2},{3,4} };
+	
+	//주소2 << 4바이트
+	//주소1[주소2] X 주소1[0001]
+	//pp[주소1]
+	int (*pp)[2] = arr2;//2차원 배열과 다중포인터는 호환되지 않음
 
-	cout << msg << endl;
-	//분석은 오른쪽에서 왼쪽으로
-	
-	//.rdata Hello주소 [H][e][l][l][o][\0]
-	//msg[ Hello주소 ] << 8바이트
-	//pp[ &msg ] << 8바이트
-	const char** pp = &msg;
-	//*pp = "Bye";
-	
-	//매개변수 리턴 지역변수(msg(Hello주소)) 매개변수(a(msg의 주소))
-	SetMessage(&msg);
-	cout << msg << endl;
+	//cout << (**pp) << endl;
 	return 0;
 }
-
 #pragma endregion
