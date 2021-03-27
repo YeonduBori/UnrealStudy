@@ -396,7 +396,7 @@ using namespace std;
 //}
 //#pragma endregion
 
-#pragma region 연습문제
+#pragma region 문자열 연습문제
 #pragma warning(disable:4996)//strcpy
 int main()
 {
@@ -411,3 +411,33 @@ int main()
 	return 0;
 }
 #pragma endregion
+
+char* StrCpy(char* dest, char* src)
+{
+	//int i = 0;
+	//while (src[i] != '\0')// src[i]로 써도 null인지 아닌지 판단 가능
+	//{
+	//	dest[i] = src[i];
+	//	i++;
+	//}
+
+	//dest[i] = '\0';
+	
+	char* ret = dest;
+
+	while (*src != '\0')
+	{
+		*dest = *src;
+		dest++;//주소값 이동
+		src++;//주소값 이동
+	}
+
+	*dest = '\0';
+
+	return ret;
+}
+
+char* StrCat(char* dest, char* src)
+{
+
+}
