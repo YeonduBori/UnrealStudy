@@ -378,20 +378,36 @@ using namespace std;
 //
 //#pragma endregion
 
-#pragma region 다차원배열 ~ 포인터 마무리
+//#pragma region 다차원배열 ~ 포인터 마무리
+//int main()
+//{
+//	int apartment2D[2][5] = { {4,2,3,4,1},{1,1,5,2,2} };
+//
+//	//2차배열 활용예시 로그라이크 2D 맵
+//	int arr2[2][2] = { {1,2},{3,4} };
+//	
+//	//주소2 << 4바이트
+//	//주소1[주소2] X 주소1[0001]
+//	//pp[주소1]
+//	int (*pp)[2] = arr2;//2차원 배열과 다중포인터는 호환되지 않음
+//
+//	//cout << (**pp) << endl;
+//	return 0;
+//}
+//#pragma endregion
+
+#pragma region 연습문제
+#pragma warning(disable:4996)//strcpy
 int main()
 {
-	int apartment2D[2][5] = { {4,2,3,4,1},{1,1,5,2,2} };
+	const int BUF_SIZE = 100;
 
-	//2차배열 활용예시 로그라이크 2D 맵
-	int arr2[2][2] = { {1,2},{3,4} };
-	
-	//주소2 << 4바이트
-	//주소1[주소2] X 주소1[0001]
-	//pp[주소1]
-	int (*pp)[2] = arr2;//2차원 배열과 다중포인터는 호환되지 않음
-
-	//cout << (**pp) << endl;
+	char a[BUF_SIZE] = "Hello";//[H][e][l][l][o][\0]
+	char b[BUF_SIZE];
+	int aLength = strlen(a);
+	cout << "aLength : " << aLength << endl;
+	strcpy(b, a);
+	cout << "strcpy Test : " << a << " result : " << b << endl;
 	return 0;
 }
 #pragma endregion
