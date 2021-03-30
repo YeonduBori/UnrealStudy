@@ -396,48 +396,71 @@ using namespace std;
 //}
 //#pragma endregion
 
-#pragma region 문자열 연습문제
-#pragma warning(disable:4996)//strcpy
+//#pragma region 문자열 연습문제
+//#pragma warning(disable:4996)//strcpy
+//int main()
+//{
+//	const int BUF_SIZE = 100;
+//
+//	char a[BUF_SIZE] = "Hello";//[H][e][l][l][o][\0]
+//	char b[BUF_SIZE];
+//	int aLength = strlen(a);
+//	cout << "aLength : " << aLength << endl;
+//	strcpy(b, a);
+//	cout << "strcpy Test : " << a << " result : " << b << endl;
+//	return 0;
+//}
+//
+//
+//char* StrCpy(char* dest, char* src)
+//{
+//	//int i = 0;
+//	//while (src[i] != '\0')// src[i]로 써도 null인지 아닌지 판단 가능
+//	//{
+//	//	dest[i] = src[i];
+//	//	i++;
+//	//}
+//
+//	//dest[i] = '\0';
+//
+//	char* ret = dest;
+//
+//	while (*src != '\0')
+//	{
+//		*dest = *src;
+//		dest++;//주소값 이동
+//		src++;//주소값 이동
+//	}
+//
+//	*dest = '\0';
+//
+//	return ret;
+//}
+//
+////문자열 덧붙이는 함수
+//char* StrCat(char* dest, char* src)
+//{
+//	while (*dest != '\0')
+//		dest++;
+//	while (*src != '\0')
+//	{
+//		*dest = *src;
+//		dest++;
+//		src++;
+//		//*dest++ = *src++; 위에 코드랑 같으 의미
+//	}
+//}
+//#pragma endregion
+
+#pragma region 파일 분할 관리
+void Test_1();
+void Test_2();
+
 int main()
 {
-	const int BUF_SIZE = 100;
 
-	char a[BUF_SIZE] = "Hello";//[H][e][l][l][o][\0]
-	char b[BUF_SIZE];
-	int aLength = strlen(a);
-	cout << "aLength : " << aLength << endl;
-	strcpy(b, a);
-	cout << "strcpy Test : " << a << " result : " << b << endl;
 	return 0;
 }
+
+
 #pragma endregion
-
-char* StrCpy(char* dest, char* src)
-{
-	//int i = 0;
-	//while (src[i] != '\0')// src[i]로 써도 null인지 아닌지 판단 가능
-	//{
-	//	dest[i] = src[i];
-	//	i++;
-	//}
-
-	//dest[i] = '\0';
-	
-	char* ret = dest;
-
-	while (*src != '\0')
-	{
-		*dest = *src;
-		dest++;//주소값 이동
-		src++;//주소값 이동
-	}
-
-	*dest = '\0';
-
-	return ret;
-}
-
-char* StrCat(char* dest, char* src)
-{
-
-}
