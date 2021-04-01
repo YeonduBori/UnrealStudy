@@ -1,7 +1,7 @@
 //#include <iostream>
 //
 //using namespace std;
-#include "Test1.h"
+//#include "Test1.h"
 //enum HandType
 //{
 //	SCISSORS = 0,
@@ -44,12 +44,12 @@
 //
 //	//Func1();
 //}
-void Test3()
-{
-	cout << "Test" << endl;
-}
-int main()
-{
-	Test_1();
-	return 0;
-}
+//void Test3()
+//{
+//	cout << "Test" << endl;
+//}
+//int main()
+//{
+//	Test_1();
+//	return 0;
+//}

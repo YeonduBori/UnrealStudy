@@ -6,6 +6,26 @@ using namespace std;
 class Knight
 {
 public:
+	//생성자
+	Knight()
+	{
+		cout << "Knight 기본 생성자 출력" << endl;
+	}
+	//복사생성자
+	//일반적으로 '똑같은' 데이터를 가진 객체가 생성되길 기대함
+	Knight(const Knight& knight)
+	{
+		hp = knight.hp;
+		attack = knight.attack;
+		posX = knight.posX;
+		posY = knight.posY;
+	}
+	//소멸자
+	~Knight()
+	{
+		cout << "Knight 소멸자 출력" << endl;
+	}
+
     //멤버 함수
     void Move(int y, int x);
     void Attack();
