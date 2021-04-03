@@ -88,71 +88,128 @@ using namespace std;
 //객체지향 Object Oriented Programming
 //OOP
 //상속성
-//은닉성
+//은닉성 public  protected private
 //다형성
+#pragma region 상속성 part
+//class Player
+//{
+//public:
+//	Player()
+//	{
+//		cout << "Player 생성자 호출" << endl;
+//	}
+//	Player(int hp)
+//	{
+//		cout << "Player hp 생성자 호출" << endl;
+//	}
+//	~Player()
+//	{
+//		cout << "Player 소멸자 호출" << endl;
+//	}
+//	void Move() { cout << "Player Move 호출" << endl; }
+//	void Attack() { cout << "Player Attack 호출" << endl; }
+//	void Die() { cout << "Player Die 호출" << endl; }
+//public:
+//	int _hp;
+//	int _attack;
+//	int _defence;
+//};
+//
+//class Knight : public Player
+//{
+//public:
+//	Knight()
+//	{
+//		cout << "Knight 생성자 호출" << endl;
+//	}
+//	Knight(int stamina) : Player(100)
+//	{
+//		cout << "Knight Stamina 생성자 호출" << endl;
+//	}
+//	~Knight()
+//	{
+//		cout << "Knight 소멸자 호출" << endl;
+//	}
+//	void Move()
+//	{
+//		cout << "Knight Move 호출" << endl;
+//	}
+//public:
+//	int _stamina;
+//};
+//
+//class Mage : public Player
+//{
+//public:
+//	int _mp;
+//};
+//int main()
+//{
+//	Knight k;
+//	k._hp = 100;
+//	k._attack = 10;
+//	k._defence = 5;
+//	k._stamina = 100;
+//	k.Move();
+//	k.Player::Move();
+//	//k.Attack();
+//	//k.Die();
+//	return 0;
+//}
+#pragma endregion
 
-class Player
+class Car
 {
 public:
-	Player()
+	void MoveHandle() {}
+	void PushPedal() {}
+	void OpenDoor() {}
+	void TurnKey()
 	{
-		cout << "Player 생성자 호출" << endl;
+		RunEngine();
 	}
-	Player(int hp)
-	{
-		cout << "Player hp 생성자 호출" << endl;
-	}
-	~Player()
-	{
-		cout << "Player 소멸자 호출" << endl;
-	}
-	void Move() { cout << "Player Move 호출" << endl; }
-	void Attack() { cout << "Player Attack 호출" << endl; }
-	void Die() { cout << "Player Die 호출" << endl; }
+protected:
+	void DisassembleCar() {}
+	void RunEngine() {}
+	void ConnectCircuit(){}
+};
+
+
+//상속 접근 지정자 : 다음세대에게 부모 성질 어떻게 물려줄지
+// public : 부모 유산 그대로 설계 상속(public -> public, protected -> protected)
+// protected : 자손들에게만 상속(public -> protected, protected -> protected)
+// private : 개인적인 상속(public -> private, protected -> private)
+class SuperCar : public Car // 상속 접근 지정자
+{
 public:
+	void PushRemoteController()
+	{
+		RunEngine();
+	}
+};
+
+//캡슐화
+class Berserker
+{
+public:
+	int GetHp() { return _hp; }
+	void SetHp(int hp)
+	{
+		_hp = hp;
+		if (_hp <= 50)
+			SetBerserkerMode();
+	}
+private:
+	void SetBerserkerMode()
+	{
+		cout << "매우 강해짐" << endl;
+	}
+private:
 	int _hp;
-	int _attack;
-	int _defence;
 };
 
-class Knight : public Player
-{
-public:
-	Knight()
-	{
-		cout << "Knight 생성자 호출" << endl;
-	}
-	Knight(int stamina) : Player(100)
-	{
-		cout << "Knight Stamina 생성자 호출" << endl;
-	}
-	~Knight()
-	{
-		cout << "Knight 소멸자 호출" << endl;
-	}
-	void Move()
-	{
-		cout << "Knight Move 호출" << endl;
-	}
-public:
-	int _stamina;
-};
-
-class Mage : public Player
-{
-public:
-	int _mp;
-};
 int main()
 {
-	Knight k;
-	k._hp = 100;
-	k._attack = 10;
-	k._defence = 5;
-	k._stamina = 100;
-	k.Move();
-	k.Player::Move();
-	//k.Attack();
-	//k.Die();
+	Car car;
 	return 0;
 }
