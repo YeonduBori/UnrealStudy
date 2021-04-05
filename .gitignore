@@ -16,3 +16,10 @@ InfernCppUnreal/CppPractice/Basic_Cpp/Debug/
 nDisplayTutorial/Saved/
 InfernCppUnreal/CppPractice/Basic_Cpp/TextRPG/Debug/
 InfernCppUnreal/CppPractice/Basic_Cpp/PointerPractice/Debug/
+*.obj
+*.recipe
+*.log
+*.tlog
+*.pdb
+InfernCppUnreal/CppPractice/Basic_Cpp/x64/Debug/
+*.idb
