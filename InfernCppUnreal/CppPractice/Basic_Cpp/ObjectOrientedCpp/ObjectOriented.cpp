@@ -81,6 +81,16 @@ int main()
 
 // - 전역 연산자 함수 version
 // -- a op b형태라면 a,b 모두를 
+
+// 복사 대입 연산자 = 대입연산자 중, 자기자신의 참조 타입을 인자로 받는것
+
+//기타
+//모든 연산자를 다 오버로딩 할 수 있는 것은 아니다.(:: . .* 이런건 안됨)
+// 모든 연산자가 다 2개 항이 있는건 아님 ++ -- 대표적(단항 연산자)
+// 증감연산자 ++ --
+//-- 전위형 ++a operator++()
+//-- 후위형 a++ operator++(int)
+
 class Position
 {
 public:
@@ -109,11 +119,31 @@ public:
 		return _x == arg._x && _y == arg._y;
 	}
 
-	//void operator =(int arg)
-	//{
-	//	_x = arg;
-	//	_y = arg;
-	//}
+	Position& operator=(Position& arg)
+	{
+		_x = arg._x;
+		_y = arg._y;
+		return *this;
+	}
+
+	Position& operator++()
+	{
+		_x++;
+		_y++;
+		return *this;
+	}
+
+	void operator++(int)
+	{
+		_x++;
+		_y++;
+	}
+	Position& operator =(int arg)
+	{
+		_x = arg;
+		_y = arg;
+		return *this;
+	}
 public:
 	int _x;
 	int _y;
@@ -150,7 +180,7 @@ int main()
 	bool isSame = (pos3 == pos4);
 	
 	Position pos5; //= 5;//타입변환생성자(int something = 5)를 호출
-	pos5 = 5;//기본 생성자 호출 후 operator =을 통해 x 5 y 5
+	pos3 = (pos5 = 5);//기본 생성자 호출 후 operator =을 통해 x 5 y 5
 	return 0;
 }
 #pragma endregion
