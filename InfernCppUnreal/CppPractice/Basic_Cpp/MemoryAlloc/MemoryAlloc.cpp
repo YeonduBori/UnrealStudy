@@ -86,40 +86,40 @@ using namespace std;
 
 #pragma region 타입 변환
 ////malloc -> void*을 반환하고 이를 우리가 (타입 변환)을 통해 사용했었음
-//class Knight
-//{
-//public:
-//	int _hp = 10;
-//};
-//
-//class Dog
-//{
-//public:
-//	Dog()
-//	{
-//
-//	}
-//	//타입 변환 생성자
-//	Dog(const Knight& knight)
-//	{
-//		_age = knight._hp;
-//	}
-//
-//	operator Knight()
-//	{
-//		return (Knight)(*this);
-//	}
-//public:
-//	int _age = 1;
-//	int _cuteness = 2;
-//};
-//
-//class BullDog : public Dog
-//{
-//public:
-//	bool _french;
-//};
-//
+class Knight
+{
+public:
+	int _hp = 10;
+};
+
+class Dog
+{
+public:
+	Dog()
+	{
+
+	}
+	//타입 변환 생성자
+	Dog(const Knight& knight)
+	{
+		_age = knight._hp;
+	}
+
+	operator Knight()
+	{
+		return (Knight)(*this);
+	}
+public:
+	int _age = 1;
+	int _cuteness = 2;
+};
+
+class BullDog : public Dog
+{
+public:
+	bool _french;
+};
+
 //int main()
 //{
 //	// 타입 변환 유형(비트열 재구성 여부)
@@ -232,12 +232,23 @@ public:
 		cout << "Item()" << endl;
 	}
 
+	Item(int itemType)// : Item()
+	{
+		cout << "ItemType()" << endl;
+		_itemType = itemType;
+	}
+
 	Item(const Item& item)
 	{
 		cout << "Item(const Itme&)" << endl;
 	}
 
-	~Item()
+	virtual void Test()
+	{
+		cout << "Item Test" << endl;
+	}
+
+	virtual ~Item()
 	{
 		cout << "~Item()" << endl;
 	}
@@ -246,6 +257,52 @@ public:
 	int _itemType = 0;
 	int _itemDbId = 0;
 	char _dummy[4096] = {}; // 이런 저런 정보들로 인해 비대해진
+};
+
+enum ItemType
+{
+	IT_WEAPON = 1,
+	IT_ARMOR = 2
+};
+
+class Weapon : public Item
+{
+public:
+	Weapon(): Item(IT_WEAPON)
+	{
+		cout << "Weapon()" << endl;
+		_damage = rand() % 100 + 1;
+	}
+	~Weapon()
+	{
+		cout << "~Weapon()" << endl;
+	}
+	void Test()
+	{
+		cout << "Test Weapon" << endl;
+	}
+public:
+	int _damage = 0;
+};
+
+class Armor : public Item
+{
+public:
+	Armor() : Item(IT_ARMOR)
+	{
+		cout << "Armor()" << endl;
+	}
+	~Armor()
+	{
+		cout << "~Armor()" << endl;
+	}
+
+	void Test()
+	{
+		cout << "Armor Test" << endl;
+	}
+public:
+	int _defence;
 };
 
 void TestItem(Item item)
@@ -261,30 +318,100 @@ int main()
 {
 	//복습
 	{
-		//Stack메모리에 올라가있는 상태 Stack[ type(4) dbid(4) dummy(4096)]
-		Item item;
-		// Stack 바구니 자체는 Stack에 생성 [ 주소(4-8) ] -> Heap 주소 [ type(4) dbid(4) dummy(4096)]
-		Item* item2 = new Item();
-		//// 메모리 누수(Memory Leak) -> 누적되면 메모리가 터질 위험이 있다.
-		//delete item2;
-		//item2 = NULL;
+		////Stack메모리에 올라가있는 상태 Stack[ type(4) dbid(4) dummy(4096)]
+		//Item item;
+		//// Stack 바구니 자체는 Stack에 생성 [ 주소(4-8) ] -> Heap 주소 [ type(4) dbid(4) dummy(4096)]
+		//Item* item2 = new Item();
+		////// 메모리 누수(Memory Leak) -> 누적되면 메모리가 터질 위험이 있다.
+		////delete item2;
+		////item2 = NULL;
 
-		TestItem(item);
-		TestItem(*item2);
+		//TestItem(item);
+		//TestItem(*item2);
 
-		TestItemPtr(&item);
-		TestItemPtr(item2);
+		//TestItemPtr(&item);
+		//TestItemPtr(item2);
 	}
 
 	//배열
 	{
-		cout << "-----------------------------" << endl;
-		//진짜 item 100개 스택 메모리에 올라와있음
-		Item item3[100] = {};
+		//cout << "-----------------------------" << endl;
+		////진짜 item 100개 스택 메모리에 올라와있음
+		//Item item3[100] = {};
 
-		cout << "-----------------------------" << endl;
-		// 아이템을 가리키는 바구니가 100개 실체가 없을 수도 있음
-		Item* item4[100] = {};
+		//cout << "-----------------------------" << endl;
+		//// 아이템을 가리키는 바구니가 100개 실체가 없을 수도 있음
+		//Item* item4[100] = {};
+	}
+
+	//연관 없는 클래스 사이의 포인터 변환 테스트
+	{
+		//Stack [ 주소 ] -> Heap [ _hp(4) ]
+		Knight* knight = new Knight();
+
+		//암시적으로는 NO
+		//명시적으로는 OK
+		// Stack[ 주소 ]
+		//Item* item = (Item*)knight;
+		//item->_itemType = 2;
+		//item->_itemDbId = 1;
+		//delete knight;
+	}
+
+	//부모 -> 자식 변환 테스트
+	{
+		Item* item = new Item();
+		// [ [ Item ] ]
+		// [   _damage]
+		//Weapon* weapon = (Weapon*)item;
+		//weapon->_damage = 10;
+		delete item;
+
+	}
+
+	// 자식 -> 부모 변환 테스트
+	{
+		Weapon* weapon = new Weapon();
+		Item* item = weapon;
+		delete weapon;
+	}
+
+	Item* inventory[20] = {};
+
+	srand((unsigned int)time(nullptr));
+	for (int index = 0; index < 20; index++)
+	{
+		int randValue = rand() % 2;
+		switch (randValue)
+		{
+			case 0:
+				inventory[index] = new Weapon();
+				break;
+			case 1:
+				inventory[index] = new Armor();
+				break;
+		}
+	}
+
+	for (int index = 0; index < 20; index++)
+	{
+		Item* item = inventory[index];
+		if (item == nullptr)
+			continue;
+		item->Test();
+		delete item;
+		//if (item->_itemType == IT_WEAPON)
+		//{
+		//	Weapon* weapon = (Weapon*)item;//원본이 item이라 가능
+		//	cout << "Weapon Damage : " << weapon->_damage << endl;
+		//	
+		//	delete weapon;
+		//}
+		//else
+		//{
+		//	Armor* armor = (Armor*)item;
+		//	delete armor;
+		//}
 	}
 	return 0;
 }
