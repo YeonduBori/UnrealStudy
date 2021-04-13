@@ -13,6 +13,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ObjectOrientedCpp", "Object
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MemoryAlloc", "MemoryAlloc\MemoryAlloc.vcxproj", "{96A72800-F1C6-4088-9A7A-2E271B727753}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DeepCopy", "DeepCopy\DeepCopy.vcxproj", "{F06EC6C4-973B-4A42-8AE3-6F63C43C34FC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -61,6 +63,14 @@ Global
 		{96A72800-F1C6-4088-9A7A-2E271B727753}.Release|x64.Build.0 = Release|x64
 		{96A72800-F1C6-4088-9A7A-2E271B727753}.Release|x86.ActiveCfg = Release|Win32
 		{96A72800-F1C6-4088-9A7A-2E271B727753}.Release|x86.Build.0 = Release|Win32
+		{F06EC6C4-973B-4A42-8AE3-6F63C43C34FC}.Debug|x64.ActiveCfg = Debug|x64
+		{F06EC6C4-973B-4A42-8AE3-6F63C43C34FC}.Debug|x64.Build.0 = Debug|x64
+		{F06EC6C4-973B-4A42-8AE3-6F63C43C34FC}.Debug|x86.ActiveCfg = Debug|Win32
+		{F06EC6C4-973B-4A42-8AE3-6F63C43C34FC}.Debug|x86.Build.0 = Debug|Win32
+		{F06EC6C4-973B-4A42-8AE3-6F63C43C34FC}.Release|x64.ActiveCfg = Release|x64
+		{F06EC6C4-973B-4A42-8AE3-6F63C43C34FC}.Release|x64.Build.0 = Release|x64
+		{F06EC6C4-973B-4A42-8AE3-6F63C43C34FC}.Release|x86.ActiveCfg = Release|Win32
+		{F06EC6C4-973B-4A42-8AE3-6F63C43C34FC}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
