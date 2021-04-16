@@ -23,3 +23,5 @@ InfernCppUnreal/CppPractice/Basic_Cpp/PointerPractice/Debug/
 *.pdb
 InfernCppUnreal/CppPractice/Basic_Cpp/x64/Debug/
 *.idb
+Algorithm/bin/
+Algorithm/obj/
