@@ -3,105 +3,179 @@ using System.Collections.Generic;
 
 namespace Algorithm
 {
-    class Program
-    {
-        static void Main(string[] args)
+    #region quciksort
+    //class Program
+    //{
+    //    static void Main(string[] args)
+    //    {
+    //        QuickSort quickSort = new QuickSort();
+    //        int[] array = { 9, 8, 7, 6, 5, 4, 3, 2, 1 };
+    //        //List<int> result = quickSort.Sort(new List<int>(array), 0);
+    //        //foreach(var number in result)
+    //        //{
+    //        //    Console.WriteLine(number);
+    //        //}
+    //        quickSort.arraySort(ref array, 0, array.Length - 1);
+    //        foreach (var number in array)
+    //        {
+    //            Console.Write($"{number},");
+
+    //        }
+    //        Console.WriteLine("----");
+    //    }
+    //}
+
+    //class QuickSort
+    //{
+    //    public List<int> Sort(List<int> list, int pivotIndex)
+    //    {
+    //        if (list.Count <= 1)
+    //        {
+    //            return list;
+    //        }
+    //        List<int> result = new List<int>();
+    //        List<int> left = new List<int>();
+    //        List<int> right = new List<int>();
+
+    //        for (int index = 1; index < list.Count; index++)
+    //        {
+    //            if (list[pivotIndex] < list[index])
+    //            {
+    //                right.Add(list[index]);
+    //            }
+    //            else
+    //            {
+    //                left.Add(list[index]);
+    //            }
+    //        }
+    //        result.AddRange(Sort(left, 0));
+    //        result.Add(list[pivotIndex]);
+    //        result.AddRange(Sort(right, 0));
+    //        return result;
+    //    }
+
+    //    public void arraySort(ref int[] array, int left, int right)
+    //    {
+    //        if (left < right)//left가 0부터 시작, right가 array Length - 1부터 시작하기 때문에 Over 할 일 없다.
+    //        {
+    //            int leftCursor = left;
+    //            int rightCursor = right;
+
+    //            while (leftCursor < rightCursor)// left + 1해서 leftCursor가 rightCursor랑 같아서 걸리는 부분은 여기서 걸러짐
+    //            {
+    //                while (leftCursor < right)
+    //                {
+    //                    if (array[leftCursor] < array[left])
+    //                        leftCursor++;
+    //                    else
+    //                        break;
+    //                }
+    //                while (leftCursor < rightCursor && rightCursor > left)
+    //                {
+    //                    if (array[rightCursor] > array[left])
+    //                        rightCursor--;
+    //                    else
+    //                        break;
+    //                }
+    //                if (leftCursor < rightCursor)
+    //                    Swap(ref array[leftCursor], ref array[rightCursor]);
+    //                foreach (var number in array)
+    //                {
+    //                    Console.Write($"{number},");
+
+    //                }
+    //                Console.WriteLine("----");
+    //            }
+    //            Swap(ref array[leftCursor], ref array[left]);
+    //            foreach (var number in array)
+    //            {
+    //                Console.Write($"{number},");
+
+    //            }
+    //            Console.WriteLine("----");
+    //            arraySort(ref array, left, leftCursor - 1);
+    //            arraySort(ref array, rightCursor + 1, right);
+    //        }
+    //    }
+
+    //    public void Swap(ref int a, ref int b)
+    //    {
+    //        int temp = a;
+    //        a = b;
+    //        b = temp;
+    //    }
+    //}
+    #endregion
+    #region merge sort
+        class Program
         {
-            QuickSort quickSort = new QuickSort();
-            int[] array = {9,8,7,6,5,4,3,2,1};
-            //List<int> result = quickSort.Sort(new List<int>(array), 0);
-            //foreach(var number in result)
-            //{
-            //    Console.WriteLine(number);
-            //}
-            quickSort.arraySort(ref array, 0, array.Length - 1);
-            foreach(var number in array)
+            static int[] testArray = { 9, 8, 7, 6, 5, 4, 3, 2, 1 };
+            static void Main(string[] args)
             {
-                Console.Write($"{number},");
-
-            }
-            Console.WriteLine("----");
-        }
-    }
-
-    class QuickSort
-    {
-        public List<int> Sort(List<int> list, int pivotIndex)
-        {
-            if(list.Count <= 1)
-            {
-                return list;
-            }
-            List<int> result = new List<int>();
-            List<int> left = new List<int>();
-            List<int> right = new List<int>();
-
-            for (int index = 1; index < list.Count; index++)
-            {
-                if (list[pivotIndex] < list[index])
+                int[] result = MergeSort(testArray);
+                foreach (var number in result)
                 {
-                    right.Add(list[index]);
+                    Console.WriteLine(number);
                 }
-                else
-                {
-                    left.Add(list[index]);
-                }
             }
-            result.AddRange(Sort(left, 0));
-            result.Add(list[pivotIndex]);
-            result.AddRange(Sort(right, 0));
-            return result;
-        }
 
-        public void arraySort(ref int[] array, int left, int right)
-        {
-            if(left < right)//left가 0부터 시작, right가 array Length - 1부터 시작하기 때문에 Over 할 일 없다.
+            static int[] MergeSort(int[] array)
             {
-                int leftCursor = left;
-                int rightCursor = right;
-                
-                while(leftCursor < rightCursor)// left + 1해서 leftCursor가 rightCursor랑 같아서 걸리는 부분은 여기서 걸러짐
+                int[] resultArray = Split(array);
+                return resultArray;
+            }
+
+            static int[] Split(int[] original)
+            {
+                if (original.Length <= 1)
+                    return original;
+
+                int middleIndex = original.Length / 2;
+                int[] leftArray = new int[middleIndex];
+                int[] rightArray = new int[original.Length - middleIndex];
+
+                for (int index = 0; index < original.Length; index++)
                 {
-                    while (leftCursor < right)
+                    if (index < middleIndex)
+                        leftArray[index] = original[index];
+                    else
+                        rightArray[index - middleIndex] = original[index];
+                }
+
+                return Merge(Split(leftArray), Split(rightArray));
+            }
+
+            static int[] Merge(int[] leftArray, int[] rightArray)
+            {
+                int[] mergeResult = new int[leftArray.Length + rightArray.Length];
+                int leftCursor = 0;
+                int rightCursor = 0;
+                int mergeIndex = 0;
+                while (leftCursor < leftArray.Length && rightCursor < rightArray.Length)
+                {
+                    if (leftArray[leftCursor] < rightArray[rightCursor])
                     {
-                        if (array[leftCursor] < array[left])
-                            leftCursor++;
-                        else
-                            break;
+                        mergeResult[mergeIndex++] = leftArray[leftCursor++];
                     }
-                    while (leftCursor < rightCursor && rightCursor > left)
+                    else
                     {
-                        if (array[rightCursor] > array[left])
-                            rightCursor--;
-                        else
-                            break;
+                        mergeResult[mergeIndex++] = rightArray[rightCursor++];
                     }
-                    if(leftCursor < rightCursor)
-                        Swap(ref array[leftCursor], ref array[rightCursor]);
-                    foreach (var number in array)
-                    {
-                        Console.Write($"{number},");
-
-                    }
-                    Console.WriteLine("----");
                 }
-                Swap(ref array[leftCursor], ref array[left]);
-                foreach (var number in array)
+
+                while (leftCursor < leftArray.Length || rightCursor < rightArray.Length)
                 {
-                    Console.Write($"{number},");
-
+                    if (leftCursor < leftArray.Length)
+                    {
+                        mergeResult[mergeIndex++] = leftArray[leftCursor++];
+                    }
+                    else if (rightCursor < rightArray.Length)
+                    {
+                        mergeResult[mergeIndex++] = rightArray[rightCursor++];
+                    }
                 }
-                Console.WriteLine("----");
-                arraySort(ref array, left, leftCursor - 1);
-                arraySort(ref array, rightCursor + 1, right);
+                return mergeResult;
             }
         }
-
-        public void Swap(ref int a, ref int b)
-        {
-            int temp = a;
-            a = b;
-            b = temp;
-        }
-    }
+    #endregion
 }
