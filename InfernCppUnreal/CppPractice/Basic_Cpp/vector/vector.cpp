@@ -77,49 +77,243 @@ using namespace std;
 //}
 #pragma endregion
 
+#pragma region vector_2
+//int main()
+//{
+//	vector<int> v(10);
+//
+//	for (vector<int>::size_type i = 0; i < v.size(); i++)
+//		v[i] = i;
+//
+//	/*vector<int>::iterator it;
+//	int* ptr;
+//
+//	it = v.begin();
+//	ptr = &v[0];
+//	cout << (*it) << endl;
+//	cout << (*ptr) << endl;
+//
+//	it++;
+//	++it;
+//	ptr++;
+//	++ptr;
+//
+//	vector<int>::iterator itBegin = v.begin();
+//	vector<int>::iterator itEnd = v.end();*/
+//
+//	//iterator는 vector 뿐 아니라, 다른 컨테이너에도 공통적으로 있는 개념
+//	//str 한정 공통점이 생김
+//	for (vector<int>::iterator it = v.begin(); it != v.end(); ++it)
+//	{
+//		cout << (*it) << endl;
+//	}
+//
+//	int* ptrBegin = &v[0];//v.begin()._Ptr;
+//	int* ptrEnd = ptrBegin + 10;//v.end()._Ptr;
+//	for (int* ptr = ptrBegin; ptr != ptrEnd; ptr++)
+//	{
+//		cout << (*ptr) << endl;
+//	}
+//
+//	//const int*
+//	vector<int>::const_iterator cit1 = v.cbegin();
+//	//*cit1 = 100;// 수정 블락
+//	for (vector<int>::reverse_iterator it = v.rbegin(); it != v.rend(); ++it)
+//	{
+//		cout << (*it) << endl;
+//	}
+//
+//	//vector = 동적 배열 = 동적으로 커지는 배열 = 배열
+//	// 원소가 하나의 메모리 블럭에 연속하게 저장된다!!
+//
+//	// - 중간 삽입/삭제 (BAD)
+//	// 	   삽입이나 삭제시 앞으로 당겨오거나 뒤로 미는 작업이 필요
+//	// 	   처음 / 끝 삽입/삭제 (BAD / GOOD)
+//	// - 임의 접근(Random Access)	
+//	//[                 ]
+//	//[0][1][2][3][4][][]
+//	v.push_back(1);
+//	v.pop_back();
+//
+//	//// 3번째 데이터는 어디 있나요
+//	//v[2] = 3;
+//
+//	//vector<int>::iterator insertIt = v.insert(v.begin() + 2, 5);
+//	//vector<int>::iterator eraseIt1 = v.erase(v.begin() + 2);
+//	//vector<int>::iterator eraseIt2 = v.erase(v.begin() + 2, v.begin() + 4);
+//
+//	for (vector<int>::iterator it = v.begin(); it != v.end();)
+//	{
+//		int data = *it;
+//		if (data == 3)
+//		{
+//			it = v.erase(it);
+//		}
+//		else
+//		{
+//			++it;
+//		}
+//	}
+//
+//	return 0;
+//}
+#pragma endregion
+
+template<typename T>
+class Iterator
+{
+public:
+	Iterator() :_ptr(nullptr)
+	{
+
+	}
+
+	Iterator(T* ptr) : _ptr(ptr)
+	{
+
+	}
+
+	Iterator operator+(const int count)
+	{
+		Iterator temp = *this;
+		temp._ptr += count;
+		return temp;
+	}
+
+	Iterator& operator++()
+	{
+		_ptr++;
+		return *this;
+	}
+
+	Iterator operator++(int)
+	{
+		Iterator temp = *this;
+		_ptr++;
+		return temp;
+	}
+
+	Iterator& operator--()
+	{
+		_ptr--;
+		return *this;
+	}
+
+	Iterator operator--(int)
+	{
+		Iterator temp = *this;
+		_ptr--;
+		return temp;
+	}
+
+	bool operator==(const Iterator& right)
+	{
+		return _ptr == right._ptr;
+	}
+
+	bool operator!=(const Iterator& right)
+	{
+		return !(*this == right)
+	}
+
+	T& operator*()
+	{
+		return *ptr;
+	}
+public:
+	T* _ptr;
+};
+
+template<typename T>
+class Vector
+{
+public:
+	Vector() : _data(nullptr), _size(0), _capacity(0)
+	{
+
+	}
+
+	~Vector()
+	{
+		if (_data)
+			delete[] _data;
+	}
+
+	void push_back(const T& val)
+	{
+		if (_size == _capacity)
+		{
+			// 증설 작업
+			int newCapacity = static_cast<int>(_capacity * 1.5);
+			if (newCapacity == _capacity)
+				newCapacity++;
+
+			reserve(newCapacity);
+		}
+
+		// 데이터 저장
+		_data[_size] = val;
+
+		// 데이터 개수 증가
+		_size++;
+	}
+
+	void reserve(int capacity)
+	{
+		_capacity = capacity;
+		T* newData = new T[_capacity];
+	
+		// 데이터 복사
+		for (int index = 0; index < _size; index++)
+			newData[index] = _data[index];
+
+		// 기존에 있던 데이터 날린다.
+		if (_data)
+			delete[] _data;
+
+		_data = newData;
+	}
+
+	T& operator[](const int pos)
+	{
+		return _data[pos];
+	}
+
+	int size() { return _size; }
+	int capacity() { return _capacity; }
+
+public:
+	typedef Iterator<T> iterator;
+
+	iterator begin() { return iterator(&_data[0]); }
+	iterator end() { return begin() + _size; }
+private:
+	T* _data;
+	int _size;
+	int _capacity
+};
+
 int main()
 {
-	vector<int> v(10);
+	vector<int> v;
 
-	for (vector<int>::size_type i = 0; i < v.size(); i++)
-		v[i] = i;
+	for (int index = 0; index < 100; index++)
+	{
+		v.push_back(index);
+		cout << v.size() << " " << v.capacity() << endl;
+	}
 
-	/*vector<int>::iterator it;
-	int* ptr;
+	for (int index = 0; index < v.size(); index++)
+	{
+		cout << v[index] << endl;
+	}
 
-	it = v.begin();
-	ptr = &v[0];
-	cout << (*it) << endl;
-	cout << (*ptr) << endl;
+	cout << "--------------------------" << endl;
 
-	it++;
-	++it;
-	ptr++;
-	++ptr;
-
-	vector<int>::iterator itBegin = v.begin();
-	vector<int>::iterator itEnd = v.end();*/
-
-	//iterator는 vector 뿐 아니라, 다른 컨테이너에도 공통적으로 있는 개념
-	//str 한정 공통점이 생김
 	for (vector<int>::iterator it = v.begin(); it != v.end(); ++it)
 	{
 		cout << (*it) << endl;
 	}
 
-	int* ptrBegin = &v[0];//v.begin()._Ptr;
-	int* ptrEnd = ptrBegin + 10;//v.end()._Ptr;
-	for (int* ptr = ptrBegin; ptr != ptrEnd; ptr++)
-	{
-		cout << (*ptr) << endl;
-	}
-
-	//const int*
-	vector<int>::const_iterator cit1 = v.cbegin();
-	//*cit1 = 100;// 수정 블락
-	for (vector<int>::reverse_iterator it = v.rbegin(); it != v.rend(); ++it)
-	{
-		cout << (*it) << endl;
-	}
 	return 0;
 }
