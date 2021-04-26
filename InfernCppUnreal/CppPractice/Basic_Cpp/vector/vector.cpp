@@ -213,12 +213,12 @@ public:
 
 	bool operator!=(const Iterator& right)
 	{
-		return !(*this == right)
+		return !(*this == right);
 	}
 
 	T& operator*()
 	{
-		return *ptr;
+		return *_ptr;
 	}
 public:
 	T* _ptr;
@@ -290,7 +290,7 @@ public:
 private:
 	T* _data;
 	int _size;
-	int _capacity
+	int _capacity;
 };
 
 int main()
