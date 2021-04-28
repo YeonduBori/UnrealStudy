@@ -23,6 +23,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vector", "vector\vector.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "list", "list\list.vcxproj", "{17A90598-C315-4764-8BFE-E194C015C8BE}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "STL_practice", "STL_practice\STL_practice.vcxproj", "{AD9AEC96-06F3-4B7E-923B-FCB179B2A9F9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -95,13 +97,20 @@ Global
 		{8E321200-EA76-4AB3-BF80-6F9329DF8BDC}.Release|x86.ActiveCfg = Release|Win32
 		{8E321200-EA76-4AB3-BF80-6F9329DF8BDC}.Release|x86.Build.0 = Release|Win32
 		{17A90598-C315-4764-8BFE-E194C015C8BE}.Debug|x64.ActiveCfg = Debug|x64
-		{17A90598-C315-4764-8BFE-E194C015C8BE}.Debug|x64.Build.0 = Debug|x64
 		{17A90598-C315-4764-8BFE-E194C015C8BE}.Debug|x86.ActiveCfg = Debug|Win32
 		{17A90598-C315-4764-8BFE-E194C015C8BE}.Debug|x86.Build.0 = Debug|Win32
 		{17A90598-C315-4764-8BFE-E194C015C8BE}.Release|x64.ActiveCfg = Release|x64
 		{17A90598-C315-4764-8BFE-E194C015C8BE}.Release|x64.Build.0 = Release|x64
 		{17A90598-C315-4764-8BFE-E194C015C8BE}.Release|x86.ActiveCfg = Release|Win32
 		{17A90598-C315-4764-8BFE-E194C015C8BE}.Release|x86.Build.0 = Release|Win32
+		{AD9AEC96-06F3-4B7E-923B-FCB179B2A9F9}.Debug|x64.ActiveCfg = Debug|x64
+		{AD9AEC96-06F3-4B7E-923B-FCB179B2A9F9}.Debug|x64.Build.0 = Debug|x64
+		{AD9AEC96-06F3-4B7E-923B-FCB179B2A9F9}.Debug|x86.ActiveCfg = Debug|Win32
+		{AD9AEC96-06F3-4B7E-923B-FCB179B2A9F9}.Debug|x86.Build.0 = Debug|Win32
+		{AD9AEC96-06F3-4B7E-923B-FCB179B2A9F9}.Release|x64.ActiveCfg = Release|x64
+		{AD9AEC96-06F3-4B7E-923B-FCB179B2A9F9}.Release|x64.Build.0 = Release|x64
+		{AD9AEC96-06F3-4B7E-923B-FCB179B2A9F9}.Release|x86.ActiveCfg = Release|Win32
+		{AD9AEC96-06F3-4B7E-923B-FCB179B2A9F9}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
