@@ -106,76 +106,168 @@ namespace Algorithm
     //    }
     //}
     #endregion
+
     #region merge sort
-        class Program
-        {
-            static int[] testArray = { 9, 8, 7, 6, 5, 4, 3, 2, 1 };
-            static void Main(string[] args)
-            {
-                int[] result = MergeSort(testArray);
-                foreach (var number in result)
-                {
-                    Console.WriteLine(number);
-                }
-            }
+        //class Program
+        //{
+        //    static int[] testArray = { 9, 8, 7, 6, 5, 4, 3, 2, 1 };
+        //    static void Main(string[] args)
+        //    {
+        //        int[] result = MergeSort(testArray);
+        //        foreach (var number in result)
+        //        {
+        //            Console.WriteLine(number);
+        //        }
+        //    }
 
-            static int[] MergeSort(int[] array)
-            {
-                int[] resultArray = Split(array);
-                return resultArray;
-            }
+        //    static int[] MergeSort(int[] array)
+        //    {
+        //        int[] resultArray = Split(array);
+        //        return resultArray;
+        //    }
 
-            static int[] Split(int[] original)
-            {
-                if (original.Length <= 1)
-                    return original;
+        //    static int[] Split(int[] original)
+        //    {
+        //        if (original.Length <= 1)
+        //            return original;
 
-                int middleIndex = original.Length / 2;
-                int[] leftArray = new int[middleIndex];
-                int[] rightArray = new int[original.Length - middleIndex];
+        //        int middleIndex = original.Length / 2;
+        //        int[] leftArray = new int[middleIndex];
+        //        int[] rightArray = new int[original.Length - middleIndex];
 
-                for (int index = 0; index < original.Length; index++)
-                {
-                    if (index < middleIndex)
-                        leftArray[index] = original[index];
-                    else
-                        rightArray[index - middleIndex] = original[index];
-                }
+        //        for (int index = 0; index < original.Length; index++)
+        //        {
+        //            if (index < middleIndex)
+        //                leftArray[index] = original[index];
+        //            else
+        //                rightArray[index - middleIndex] = original[index];
+        //        }
 
-                return Merge(Split(leftArray), Split(rightArray));
-            }
+        //        return Merge(Split(leftArray), Split(rightArray));
+        //    }
 
-            static int[] Merge(int[] leftArray, int[] rightArray)
-            {
-                int[] mergeResult = new int[leftArray.Length + rightArray.Length];
-                int leftCursor = 0;
-                int rightCursor = 0;
-                int mergeIndex = 0;
-                while (leftCursor < leftArray.Length && rightCursor < rightArray.Length)
-                {
-                    if (leftArray[leftCursor] < rightArray[rightCursor])
-                    {
-                        mergeResult[mergeIndex++] = leftArray[leftCursor++];
-                    }
-                    else
-                    {
-                        mergeResult[mergeIndex++] = rightArray[rightCursor++];
-                    }
-                }
+        //    static int[] Merge(int[] leftArray, int[] rightArray)
+        //    {
+        //        int[] mergeResult = new int[leftArray.Length + rightArray.Length];
+        //        int leftCursor = 0;
+        //        int rightCursor = 0;
+        //        int mergeIndex = 0;
+        //        while (leftCursor < leftArray.Length && rightCursor < rightArray.Length)
+        //        {
+        //            if (leftArray[leftCursor] < rightArray[rightCursor])
+        //            {
+        //                mergeResult[mergeIndex++] = leftArray[leftCursor++];
+        //            }
+        //            else
+        //            {
+        //                mergeResult[mergeIndex++] = rightArray[rightCursor++];
+        //            }
+        //        }
 
-                while (leftCursor < leftArray.Length || rightCursor < rightArray.Length)
-                {
-                    if (leftCursor < leftArray.Length)
-                    {
-                        mergeResult[mergeIndex++] = leftArray[leftCursor++];
-                    }
-                    else if (rightCursor < rightArray.Length)
-                    {
-                        mergeResult[mergeIndex++] = rightArray[rightCursor++];
-                    }
-                }
-                return mergeResult;
-            }
-        }
+        //        while (leftCursor < leftArray.Length || rightCursor < rightArray.Length)
+        //        {
+        //            if (leftCursor < leftArray.Length)
+        //            {
+        //                mergeResult[mergeIndex++] = leftArray[leftCursor++];
+        //            }
+        //            else if (rightCursor < rightArray.Length)
+        //            {
+        //                mergeResult[mergeIndex++] = rightArray[rightCursor++];
+        //            }
+        //        }
+        //        return mergeResult;
+        //    }
+        //}
     #endregion
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            string[] testCase = {"[](){}", "}]()[{", "[)(]", "}}}}", "("};
+            int[] results = {3, 2, 0, 0, 0 };
+            Solution solution = new Solution();
+            for(int index = 0; index < results.Length; index++)
+            {
+                if (solution.solution(testCase[index]) != results[index])
+                    Console.WriteLine($"틀렸습니다. Case[{index}] : {solution.solution(testCase[index])}");
+                else
+                    Console.WriteLine($"정답입니다. Case[{index}]");
+            }
+
+        }
+    }
+
+    public class Solution
+    {
+        public int solution(string s)
+        {
+            int answer = 0;
+            List<char> sentence = new List<char>(s.ToCharArray());
+            for(int loop = 0; loop < s.Length; loop++)
+            {
+                char end = sentence[sentence.Count - 1];
+                sentence.Insert(0, end);
+                sentence.RemoveAt(sentence.Count - 1);
+                if(checkValidate(sentence))
+                {
+                    answer++;
+                }
+            }
+            return answer;
+        }
+
+        public bool checkValidate(List<char> validateList)
+        {
+            Stack<char> checkStack = new Stack<char>();
+            for(int index = 0; index < validateList.Count; index++)
+            {
+                if (checkClose(validateList[index]))
+                {
+                    if (checkStack.Count != 0)
+                    {
+                        switch(checkStack.Peek())
+                        {
+                            case '{':
+                                if (validateList[index] == '}')
+                                    checkStack.Pop();
+                                else
+                                    return false;
+                                break;
+                            case '[':
+                                if (validateList[index] == ']')
+                                    checkStack.Pop();
+                                else
+                                    return false;
+                                break;
+                            case '(':
+                                if (validateList[index] == ')')
+                                    checkStack.Pop();
+                                else
+                                    return false;
+                                break;
+                        }
+                    }
+                    else
+                        return false;
+                }
+                else
+                    checkStack.Push(validateList[index]);
+            }
+            if (checkStack.Count != 0)
+                return false;
+            return true;
+        }
+
+        public bool checkClose(char check)
+        {
+            char[] checkChar = { ']', ')', '}' };
+            foreach(var close in checkChar)
+            {
+                if (check == close)
+                    return true;
+            }
+            return false;
+        }
+    }
 }
