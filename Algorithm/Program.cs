@@ -298,7 +298,7 @@ namespace Algorithm
 
         public void DFS()
         {
-
+            Head.DFS();
         }
     }
 
@@ -341,7 +341,14 @@ namespace Algorithm
 
         public void DFS()
         {
-
+            Console.WriteLine(data);
+            if(leafNodes != null)
+            {
+                foreach (var node in leafNodes)
+                {
+                    node.DFS();
+                }
+            }
         }
     }
 
@@ -363,6 +370,10 @@ namespace Algorithm
             }
 
             tree.BFS();
+
+            Console.WriteLine("===================");
+
+            tree.DFS();
         }
     }
     #endregion
