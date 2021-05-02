@@ -5,6 +5,7 @@ using namespace std;
 #include <map>
 #include <set>
 
+#include <algorithm>
 #pragma region deque
 //int main()
 //{
@@ -328,6 +329,15 @@ int main()
 				cout << "1번 문제 찾았습니다" << endl;
 			}
 		}
+		auto itFind = find(v.begin(), v.end(), number);//iterator 반환
+		if (itFind == v.end())
+		{
+			cout << "못 찾았음" << endl;
+		}
+		else
+		{
+			cout << "찾았음" << endl;
+		}
 	}
 
 	//Q2) 11로 나뉘는 숫자가 벡터에 있는지 체크하는 기능 (bool, 첫 등장 iterator)
@@ -342,6 +352,25 @@ int main()
 				found = true;
 				cout << "2번 문제 찾았습니다" << endl;
 			}
+		}
+
+		struct CanDivideBy11
+		{
+			bool operator()(int n)
+			{
+				return (n % 11) == 0;
+			}
+		};
+
+		vector<int>::iterator itFind = find_if(v.begin(), v.end(), CanDivideBy11());
+		//vector<int>::iterator itFind = find_if(v.begin(), v.end(), [](int n) {return (n % 11) == 0; });
+		if (itFind == v.end())
+		{
+			cout << "못찾았음" << endl;
+		}
+		else
+		{
+			cout << "찾았음" << endl;
 		}
 	}
 
@@ -358,6 +387,21 @@ int main()
 				cout << "3번 문제 "<< *iter <<" "<< count << "개 찾았습니다" << endl;
 			}
 		}
+		struct IsOdd
+		{
+			bool operator()(int n)
+			{
+				return (n % 2) != 0;
+			}
+		};
+		int n = count_if(v.begin(), v.end(), IsOdd());
+
+		// 모든 데이터가 홀수입니까?
+		all_of(v.begin(), v.end(), IsOdd());
+		// 홀수인 데이터가 하나라도 있습니까?
+		any_of(v.begin(), v.end(), IsOdd());
+		// 모든 데이터가 홀수가 아닙니까?
+		none_of(v.begin(), v.end(), IsOdd());
 	}
 
 	//Q4) 벡터에 들어가 있는 모든 숫자들에 3을 곱해주세요!
@@ -370,7 +414,40 @@ int main()
 			*iter = *iter * 3;
 			cout << "3 곱한 결괏값 : " << *iter << endl;
 		}
+
+		struct MultiplyBy3
+		{
+			void operator()(int& n)
+			{
+				n = n * 3;
+			}
+		};
+		for_each(v.begin(),v.end(), MultiplyBy3());
 	}
 
+	//홀수인 데이터를 일괄 삭제
+	{
+		v.clear();
+
+		v.push_back(1);
+		v.push_back(4);
+		v.push_back(3);
+		v.push_back(5);
+		v.push_back(8);
+		v.push_back(2);
+
+		struct IsOdd
+		{
+			bool operator()(int n)
+			{
+				return (n % 2) != 0;
+			}
+		};
+
+		//remove(v.begin(), v.end(), 4);
+		v.erase(remove_if(v.begin(), v.end(), IsOdd()), v.end());
+		//삭제한 위치부터 불필요한 아이들 삭제
+		//remove_if를 쓰면 필요한 데이터들을 앞쪽으로 당겨줄뿐 뒤에 내용들을 지우진 않음
+	}
 	return 0;
 }
