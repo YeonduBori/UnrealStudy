@@ -146,16 +146,130 @@ using namespace std;
 #pragma endregion
 
 #pragma region using
-//가독성 장점
-typedef vector<int>::iterator VecIt;
-//1)직관성
-typedef void (*MyFunc)(); //함수형 포인터 선언
-using MyFunc2 = void(*)();
-//2)템플릿
-template<typename T>
-using List = std::list<T>
+////가독성 장점
+//typedef vector<int>::iterator VecIt;
+////1)직관성
+//typedef void (*MyFunc)(); //함수형 포인터 선언
+//using MyFunc2 = void(*)();
+////2)템플릿
+//template<typename T>
+//using List = std::list<T>
+//
+//template<typename t>
+//typedef std::vector<T> List2;
+#pragma endregion
 
-template<typename t>
-typedef std::vector<T> List2;
+#pragma region enum class
+//// unscoped enum
+//enum PlayerType : char//char 형태로 가능
+//{
+//	PT_Knight,
+//	PT_Archer,
+//	PT_Mage
+//};
+//
+//enum MonsterType
+//{
+//	MT_Knight// 이름 겹치면 안됨
+//};
+//
+//enum class ObjectType
+//{
+//	Player,
+//	Monster,
+//	Projectile
+//};
+//
+//int main()
+//{
+//	// enum class(scoped enum)
+//	// 1) 이름공간 관리 (scoped)
+//	// 2) 암묵적인 변환 금지
+//	ObjectType type = ObjectType::Player;// C#의 enum과 동일
+//	return 0;
+//}
+#pragma endregion
+
+#pragma region delete(삭제된함수)
+//
+//class Knight
+//{
+//public:
+//private:
+//	// 정의되지 않은 비공개(private) 함수
+//public:
+//	void operator=(const Knight& k) = delete;
+//	friend class Admin;
+//private:
+//	int _hp = 100;
+//};
+//
+//class Admin
+//{
+//public:
+//	void CopyKnight(const Knight& k)
+//	{
+//		Knight k1;
+//		k1 = k;
+//	}
+//};
+//
+//int main()
+//{
+//	Knight k1;
+//
+//	Knight k2;
+//
+//	//k1 = k2;
+//	return 0;
+//}
+#pragma endregion
+
+#pragma region override final
+class Creature
+{
+public:
+	virtual void Attack()
+	{
+		cout << "Creature!" << endl;
+	}
+};
+class Player : public Creature
+{
+public:
+	virtual void Attack() final//오버라이드를 막는다.
+	{
+		cout << "Player!" << endl;
+	}
+};
+
+class Knight : public Player
+{
+public:
+
+	//virtual void Attack() const//const가 붙으면 멤버를 수정하지 않겠다는 의미, 가상함수여도 최초로 정의한 함수처럼 됨
+	//{
+	//	cout << "Knight" << endl;
+	//}
+	//재정의(override)
+	virtual void Attack() override
+	{
+		cout << "Knight" << endl;
+	}
+	//// 오버로딩 함수 이름의 재사용?
+	//void Attack(int a)
+	//{
+	//	cout << "Knight" << a << endl;
+	//}
+};
+int main()
+{
+	Player* player = new Knight();
+	Knight* knight = new Knight();
+
+	player->Attack();
+	knight->Attack();
+	return 0;
+}
 #pragma endregion
 
