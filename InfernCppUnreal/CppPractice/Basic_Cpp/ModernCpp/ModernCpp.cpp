@@ -226,49 +226,176 @@ using namespace std;
 #pragma endregion
 
 #pragma region override final
-class Creature
+//class Creature
+//{
+//public:
+//	virtual void Attack()
+//	{
+//		cout << "Creature!" << endl;
+//	}
+//};
+//class Player : public Creature
+//{
+//public:
+//	virtual void Attack() final//오버라이드를 막는다.
+//	{
+//		cout << "Player!" << endl;
+//	}
+//};
+//
+//class Knight : public Player
+//{
+//public:
+//
+//	//virtual void Attack() const//const가 붙으면 멤버를 수정하지 않겠다는 의미, 가상함수여도 최초로 정의한 함수처럼 됨
+//	//{
+//	//	cout << "Knight" << endl;
+//	//}
+//	//재정의(override)
+//	virtual void Attack() override
+//	{
+//		cout << "Knight" << endl;
+//	}
+//	//// 오버로딩 함수 이름의 재사용?
+//	//void Attack(int a)
+//	//{
+//	//	cout << "Knight" << a << endl;
+//	//}
+//};
+//int main()
+//{
+//	Player* player = new Knight();
+//	Knight* knight = new Knight();
+//
+//	player->Attack();
+//	knight->Attack();
+//	return 0;
+//}
+#pragma endregion
+
+#pragma region Rvalue 참조와 std::move
+//class Knight
+//{
+//public:
+//	Knight()
+//	{
+//		cout << "Knight" << endl;
+//	}
+//	Knight(const Knight& knight)
+//	{
+//		cout << "const Knight&" << endl;
+//	}
+//	//이동 생성자
+//	//이동 대입 연산자
+//	void operator=(Knight&& knight) noexcept
+//	{
+//		cout << "operator=(Knight&&)" << endl;
+//	}
+//public:
+//	int _hp = 100;
+//};
+//
+//void TestKnightCopy(Knight knight){ }
+//void TestKnightCopy_LValueRef(Knight& knight){ }
+//void TestKnightCopy_ConstLValueRef(const Knight& knight){ }
+//void TestKnightCopy_RValueRef(Knight&& knight){ } // 이동 대상
+//
+//int main()
+//{
+//	// 왼값(lvalue) vs 오른값(rvalue)
+//	// - lvalue : 단일식을 넘어서 계속 지속되는 개체
+//	// - rvalue : lvalue가 아닌 나머지 (임시 값, 열거형, 람다, i++ 등)
+//	
+//	//int a = 3;
+//	//3 = a;
+//
+//	Knight k1;
+//
+//	TestKnightCopy(k1);//복사 연산이 되어 k1과 복사된 knight와 연관 X
+//	TestKnightCopy_LValueRef(k1);
+//	TestKnightCopy_ConstLValueRef(Knight());
+//
+//	TestKnightCopy_RValueRef(Knight());
+//	return 0;
+//}
+#pragma endregion
+
+#pragma region 람다 lambda
+// 함수 객체를 빠르게 만드는 방법
+
+enum class ItemType
 {
-public:
-	virtual void Attack()
-	{
-		cout << "Creature!" << endl;
-	}
-};
-class Player : public Creature
-{
-public:
-	virtual void Attack() final//오버라이드를 막는다.
-	{
-		cout << "Player!" << endl;
-	}
+	None,
+	Armor,
+	Weapon,
+	Jewelry,
+	Comsumable
 };
 
-class Knight : public Player
+enum class Rarity
+{
+	Common,
+	Rare,
+	Unique
+};
+
+class Item
 {
 public:
-
-	//virtual void Attack() const//const가 붙으면 멤버를 수정하지 않겠다는 의미, 가상함수여도 최초로 정의한 함수처럼 됨
-	//{
-	//	cout << "Knight" << endl;
-	//}
-	//재정의(override)
-	virtual void Attack() override
+	Item(){}
+	Item(int itemId, Rarity rarity, ItemType type)
+		: _itemId(itemId), _rarity(rarity), _type(type)
 	{
-		cout << "Knight" << endl;
+
 	}
-	//// 오버로딩 함수 이름의 재사용?
-	//void Attack(int a)
-	//{
-	//	cout << "Knight" << a << endl;
-	//}
+public:
+	int _itemId = 0;
+	Rarity _rarity = Rarity::Common;
+	ItemType _type = ItemType::None;
 };
+
 int main()
 {
-	Player* player = new Knight();
-	Knight* knight = new Knight();
+	vector<Item> v;
+	v.push_back(Item(1, Rarity::Common, ItemType::Weapon));
+	v.push_back(Item(2, Rarity::Common, ItemType::Armor));
+	v.push_back(Item(3, Rarity::Rare, ItemType::Jewelry));
+	v.push_back(Item(4, Rarity::Unique, ItemType::Weapon));
 
-	player->Attack();
-	knight->Attack();
+	// 람다 = 함수 객체를 손쉽게 만드는 문법
+	// 람다 자체로 C++ 11에 '새로운' 기능이 들어간 것은 아니다.
+	{
+		struct IsUniqueItem
+		{
+			bool operator()(Item& item)
+			{
+				return item._rarity == Rarity::Unique;
+			}
+		};
+
+		struct FindByItemID
+		{
+			FindByItemID(int itemId):_itemId(itemId)
+			{
+
+			}
+
+			bool operator()(Item& item)
+			{
+				return item._itemId == _itemId;
+			}
+
+			int _itemId;
+		};
+		auto isUniqueLambda = [](Item& item) { return item._rarity == Rarity::Unique; };//람다 표현식
+		auto findItemIt = find_if(v.begin(), v.end(), FindByItemID(2));
+		auto findIt = find_if(v.begin(), v.end(), IsUniqueItem());
+		findIt = find_if(v.begin(), v.end(), isUniqueLambda);
+		if (findIt != v.end())
+			cout << "아이템 ID : " << findIt->_itemId << endl;
+		if(findItemIt != v.end())
+			cout << "아이템 ID : " << findItemIt->_itemId << endl;
+	}
 	return 0;
 }
 #pragma endregion
