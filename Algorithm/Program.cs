@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Algorithm
 {
@@ -274,107 +275,188 @@ namespace Algorithm
     #endregion
 
     #region BFS, DFS
-    class Tree
-    {
-        //Head Always Fist Node
-        public Node Head;
+    //class Tree
+    //{
+    //    //Head Always Fist Node
+    //    public Node Head;
 
-        public void BFS()
-        {
-            Console.WriteLine(Head.data);
-            Queue<Node> needVisitNode = new Queue<Node>();
-            foreach(var node in Head.leafNodes)
-            {
-                Console.WriteLine(node.data);
-                needVisitNode.Enqueue(node);
-            }
+    //    public void BFS()
+    //    {
+    //        Console.WriteLine(Head.data);
+    //        Queue<Node> needVisitNode = new Queue<Node>();
+    //        foreach (var node in Head.leafNodes)
+    //        {
+    //            Console.WriteLine(node.data);
+    //            needVisitNode.Enqueue(node);
+    //        }
 
-            while(needVisitNode.Count != 0)
-            {
-                Node node = needVisitNode.Dequeue();
-                node.BFS();
-            }
-        }
+    //        while (needVisitNode.Count != 0)
+    //        {
+    //            Node node = needVisitNode.Dequeue();
+    //            node.BFS();
+    //        }
+    //    }
 
-        public void DFS()
-        {
-            Head.DFS();
-        }
-    }
+    //    public void DFS()
+    //    {
+    //        Head.DFS();
+    //    }
+    //}
 
-    class Node
-    {
-        public int data;
-        public List<Node> leafNodes;
+    //class Node
+    //{
+    //    public int data;
+    //    public List<Node> leafNodes;
 
-        public Node(int number)
-        {
-            data = number;
-        }
+    //    public Node(int number)
+    //    {
+    //        data = number;
+    //    }
 
-        public void AddNode(Node node)
-        {
-            leafNodes = leafNodes ?? new List<Node>();
-            leafNodes.Add(node);
-        }
+    //    public void AddNode(Node node)
+    //    {
+    //        leafNodes = leafNodes ?? new List<Node>();
+    //        leafNodes.Add(node);
+    //    }
 
-        public void BFS()
-        {
-            if(leafNodes != null)
-            {
-                Queue<Node> needToVisit = new Queue<Node>();
-                foreach (var node in leafNodes)
-                {
-                    //이미 들렀던 노드라면 Queue에 넣지 않는다. 출력도 X
-                    //이 경우엔 Acyclic에 해당
-                    Console.WriteLine(node.data);
-                    needToVisit.Enqueue(node);
-                }
+    //    public void BFS()
+    //    {
+    //        if (leafNodes != null)
+    //        {
+    //            Queue<Node> needToVisit = new Queue<Node>();
+    //            foreach (var node in leafNodes)
+    //            {
+    //                //이미 들렀던 노드라면 Queue에 넣지 않는다. 출력도 X
+    //                //이 경우엔 Acyclic에 해당
+    //                Console.WriteLine(node.data);
+    //                needToVisit.Enqueue(node);
+    //            }
 
-                while (needToVisit.Count != 0)
-                {
-                    Node node1 = needToVisit.Dequeue();
-                    node1.BFS();
-                }
-            }
-        }
+    //            while (needToVisit.Count != 0)
+    //            {
+    //                Node node1 = needToVisit.Dequeue();
+    //                node1.BFS();
+    //            }
+    //        }
+    //    }
 
-        public void DFS()
-        {
-            Console.WriteLine(data);
-            if(leafNodes != null)
-            {
-                foreach (var node in leafNodes)
-                {
-                    node.DFS();
-                }
-            }
-        }
-    }
+    //    public void DFS()
+    //    {
+    //        Console.WriteLine(data);
+    //        if (leafNodes != null)
+    //        {
+    //            foreach (var node in leafNodes)
+    //            {
+    //                node.DFS();
+    //            }
+    //        }
+    //    }
+    //}
 
+    //class Program
+    //{
+    //    static void Main(string[] args)
+    //    {
+    //        //Console.WriteLine("Hello World"); <- for testing
+
+    //        Tree tree = new Tree();
+    //        tree.Head = new Node(1);
+    //        tree.Head.AddNode(new Node(10));
+    //        tree.Head.AddNode(new Node(7));
+    //        int count = 14;
+    //        foreach (var node in tree.Head.leafNodes)
+    //        {
+    //            node.AddNode(new Node(count++));
+    //            node.AddNode(new Node(count++));
+    //        }
+
+    //        tree.BFS();
+
+    //        Console.WriteLine("===================");
+
+    //        tree.DFS();
+    //    }
+    //}
+    #endregion
+
+    #region Dijkstra Algorithm
     class Program
     {
         static void Main(string[] args)
         {
-            //Console.WriteLine("Hello World"); <- for testing
+            int[,] nodeConnection = new int[6, 6];
+            nodeConnection[0, 1] = 8;
+            nodeConnection[0, 2] = 1;
+            nodeConnection[0, 3] = 2;
+            nodeConnection[2, 1] = 5;
+            nodeConnection[2, 3] = 2;
+            nodeConnection[3, 4] = 3;
+            nodeConnection[3, 5] = 5;
+            nodeConnection[4, 5] = 1;
+            nodeConnection[5, 0] = 5;
 
-            Tree tree = new Tree();
-            tree.Head = new Node(1);
-            tree.Head.AddNode(new Node(10));
-            tree.Head.AddNode(new Node(7));
-            int count = 14;
-            foreach(var node in tree.Head.leafNodes)
+            int[] result = DijkstraResult(nodeConnection, 0);
+            foreach(var number in result)
             {
-                node.AddNode(new Node(count++));
-                node.AddNode(new Node(count++));
+                Console.WriteLine(number);
+            }
+        }
+
+        public static int[] DijkstraResult(int[,] connection, int startNode)
+        {
+            int[] resultArray = new int[connection.GetLength(0)];
+            bool[] checkComplete = new bool[connection.GetLength(0)];
+            for (int index = 0; index < resultArray.Length; index++)
+            {
+                if (startNode == index)
+                    continue;
+                else
+                    resultArray[index] = int.MaxValue;
             }
 
-            tree.BFS();
+            List<Node> PrimaryQueue = new List<Node>();
+            Node node = new Node(startNode, 0);
+            PrimaryQueue.Add(node);
 
-            Console.WriteLine("===================");
+            while (PrimaryQueue.Count != 0)
+            {
+                Node node1 = PrimaryQueue[0];
+                for (int index = 0; index < resultArray.Length; index++)
+                {
+                    if (connection[node1.index, index] != 0)
+                    {
+                        if (node1.length + connection[node1.index, index] < resultArray[index])
+                        {
+                            resultArray[index] = node1.length + connection[node1.index, index];
+                        }
+                    }
+                }
+                checkComplete[node1.index] = true;
+                PrimaryQueue.Remove(node1);
 
-            tree.DFS();
+                for (int index = 0; index < resultArray.Length; index++)
+                {
+                    if (resultArray[index] != 0 && resultArray[index] != int.MaxValue && !checkComplete[index])
+                    {
+                        PrimaryQueue.Add(new Node(index, resultArray[index]));
+                    }
+                }
+                PrimaryQueue = PrimaryQueue.OrderBy(n => n.length).ToList();
+            }
+
+            return resultArray;
         }
+
+        public class Node
+        {
+            public int index;
+            public int length;
+            public Node(int i, int l)
+            {
+                index = i;
+                length = l;
+            }
+        }
+        #endregion
     }
-    #endregion
 }
