@@ -321,82 +321,219 @@ using namespace std;
 #pragma endregion
 
 #pragma region 람다 lambda
-// 함수 객체를 빠르게 만드는 방법
+//// 함수 객체를 빠르게 만드는 방법
+//
+//enum class ItemType
+//{
+//	None,
+//	Armor,
+//	Weapon,
+//	Jewelry,
+//	Comsumable
+//};
+//
+//enum class Rarity
+//{
+//	Common,
+//	Rare,
+//	Unique
+//};
+//
+//class Item
+//{
+//public:
+//	Item(){}
+//	Item(int itemId, Rarity rarity, ItemType type)
+//		: _itemId(itemId), _rarity(rarity), _type(type)
+//	{
+//
+//	}
+//
+//	auto ResetItemJob()
+//	{
+//		auto Reset = [this]()
+//		{
+//			this->_itemId = 0;
+//		};
+//
+//		return Reset;
+//	}
+//public:
+//	int _itemId = 0;
+//	Rarity _rarity = Rarity::Common;
+//	ItemType _type = ItemType::None;
+//};
+//
+//int main()
+//{
+//	vector<Item> v;
+//	v.push_back(Item(1, Rarity::Common, ItemType::Weapon));
+//	v.push_back(Item(2, Rarity::Common, ItemType::Armor));
+//	v.push_back(Item(3, Rarity::Rare, ItemType::Jewelry));
+//	v.push_back(Item(4, Rarity::Unique, ItemType::Weapon));
+//
+//	// 람다 = 함수 객체를 손쉽게 만드는 문법
+//	// 람다 자체로 C++ 11에 '새로운' 기능이 들어간 것은 아니다.
+//	{
+//		struct IsUniqueItem
+//		{
+//			bool operator()(Item& item)
+//			{
+//				return item._rarity == Rarity::Unique;
+//			}
+//		};
+//
+//		struct FindByItemID
+//		{
+//			FindByItemID(int itemId):_itemId(itemId)
+//			{
+//
+//			}
+//
+//			bool operator()(Item& item)
+//			{
+//				return item._itemId == _itemId;
+//			}
+//
+//			int _itemId;
+//		};
+//		int itemId = 4;
+//		Rarity rarity = Rarity::Unique;
+//		ItemType type = ItemType::Weapon;
+//
+//		auto isUniqueLambda = [](Item& item) { return item._rarity == Rarity::Unique; };//람다 표현식
+//		auto findItemIt = find_if(v.begin(), v.end(), FindByItemID(2));
+//		auto findIt = find_if(v.begin(), v.end(), IsUniqueItem());
+//
+//		// 대괄호에 &냐 = 에 따라 참조형태로 쓰냐 값복사로 쓰냐가 달라짐
+//		auto findByItem = [&](Item& item)
+//		{
+//			return item._itemId == itemId && item._rarity == rarity && item._type == type;
+//		};
+//
+//		// 가독성 측면에서 안에 변수를 적어주는 것이 좋다.
+//		// 3개라면 ItemId, &rarity &type 이런식으로 
+//		// 특정 변수만 참조형태로 지정도 가능
+//		//auto findByItem = [&itemId](Item& item)
+//		//{
+//		//	return item._itemId == itemId && item._rarity == rarity && item._type == type;
+//		//};
+//		// 예외적용도 가능 itemId를 제외한 나머지는 값복사 형태
+//		//auto findByItem = [= ,&itemId](Item& item)
+//		//{
+//		//	return item._itemId == itemId && item._rarity == rarity && item._type == type;
+//		//};
+//		findIt = find_if(v.begin(), v.end(), isUniqueLambda);
+//		if (findIt != v.end())
+//			cout << "아이템 ID : " << findIt->_itemId << endl;
+//		if(findItemIt != v.end())
+//			cout << "아이템 ID : " << findItemIt->_itemId << endl;
+//	}
+//	return 0;
+//}
+#pragma endregion
 
-enum class ItemType
-{
-	None,
-	Armor,
-	Weapon,
-	Jewelry,
-	Comsumable
-};
-
-enum class Rarity
-{
-	Common,
-	Rare,
-	Unique
-};
-
-class Item
+#pragma region Smart Pointer
+class Knight
 {
 public:
-	Item(){}
-	Item(int itemId, Rarity rarity, ItemType type)
-		: _itemId(itemId), _rarity(rarity), _type(type)
+	Knight() { cout << "Knight 생성" << endl; }
+	~Knight() { cout << "Knight 소멸" << endl; }
+	void Attack()
 	{
-
+		if(_target)
+		{
+			_target->_hp -= _damage;
+			cout << "HP : " << _target->_hp << endl;
+		}
 	}
 public:
-	int _itemId = 0;
-	Rarity _rarity = Rarity::Common;
-	ItemType _type = ItemType::None;
+	int _hp = 100;
+	int _damage = 10;
+	shared_ptr<Knight> _target = nullptr;
+};
+
+//참조 카운트 관리
+class RefCountBlock
+{
+public:
+	int _refCount = 1;
+};
+template<typename T>
+class SharedPtr
+{
+public:
+	SharedPtr() {}
+	SharedPtr(T* ptr) : _ptr(ptr)
+	{
+		if (_ptr != nullptr)
+		{
+			_block = new RefCountBlock();
+			cout << "Ref Count : " << _block->_refCount << endl;
+		}
+	}
+	SharedPtr(const SharedPtr& sptr):_ptr(sptr._ptr),_block(sptr._block)
+	{
+		if (_ptr != nullptr)
+		{
+			_block->_refCount++;
+			cout << "Ref Count : " << _block->_refCount << endl;
+		}
+	}
+
+	void operator =(const SharedPtr& sptr)
+	{
+		_ptr = sptr._ptr;
+		_block = sptr._block;
+
+		if (_ptr != nullptr)
+		{
+			_block->_refCount++;
+			cout << "Ref Count : " << _block->_refCount << endl;
+		}
+	}
+	~SharedPtr()
+	{
+		if (_ptr != nullptr)
+		{
+			_block->_refCount--;
+			cout << "Ref Count : " << _block->_refCount << endl;
+			if (_block->_refCount == 0)
+			{
+				delete _ptr;
+				delete _block;
+				cout << "Delete Data" << endl;
+			}
+		}
+	}
+public:
+	T* _ptr = nullptr;
+	RefCountBlock* _block = nullptr;
 };
 
 int main()
 {
-	vector<Item> v;
-	v.push_back(Item(1, Rarity::Common, ItemType::Weapon));
-	v.push_back(Item(2, Rarity::Common, ItemType::Armor));
-	v.push_back(Item(3, Rarity::Rare, ItemType::Jewelry));
-	v.push_back(Item(4, Rarity::Unique, ItemType::Weapon));
+	//Knight* k1 = new Knight();
+	//Knight* k2 = new Knight();
+	//k1->_target = k2;
+	//delete k2;
+	//k1->Attack();
+	// 스마트 포인터 : 포인터를 알맞는 정책에 따라 관리하는 객체(포인터를 래핑해서 사용)
+	// shared_ptr, weak_ptr, unique_ptr
+	//SharedPtr<Knight> k1(new Knight());
+	//SharedPtr<Knight> k2 = k1;
 
-	// 람다 = 함수 객체를 손쉽게 만드는 문법
-	// 람다 자체로 C++ 11에 '새로운' 기능이 들어간 것은 아니다.
+	shared_ptr<Knight> k1 = make_shared<Knight>();
 	{
-		struct IsUniqueItem
-		{
-			bool operator()(Item& item)
-			{
-				return item._rarity == Rarity::Unique;
-			}
-		};
-
-		struct FindByItemID
-		{
-			FindByItemID(int itemId):_itemId(itemId)
-			{
-
-			}
-
-			bool operator()(Item& item)
-			{
-				return item._itemId == _itemId;
-			}
-
-			int _itemId;
-		};
-		auto isUniqueLambda = [](Item& item) { return item._rarity == Rarity::Unique; };//람다 표현식
-		auto findItemIt = find_if(v.begin(), v.end(), FindByItemID(2));
-		auto findIt = find_if(v.begin(), v.end(), IsUniqueItem());
-		findIt = find_if(v.begin(), v.end(), isUniqueLambda);
-		if (findIt != v.end())
-			cout << "아이템 ID : " << findIt->_itemId << endl;
-		if(findItemIt != v.end())
-			cout << "아이템 ID : " << findItemIt->_itemId << endl;
+		shared_ptr<Knight> k2 = make_shared<Knight>();
+		k1->_target = k2;
+		k2->_target = k1;
+		//이 같은 순환참조 조심
+		//메모리가 해제되지 않는다.
 	}
+
+	k1->Attack();
+
 	return 0;
 }
 #pragma endregion
-
