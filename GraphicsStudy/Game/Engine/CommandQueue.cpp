@@ -6,7 +6,7 @@ CommandQueue::~CommandQueue()
 {
 	::CloseHandle(_fenceEvent);
 }
- 
+
 void CommandQueue::Init(ComPtr<ID3D12Device> device, shared_ptr<SwapChain> swapChain)
 {
 	_swapChain = swapChain;
