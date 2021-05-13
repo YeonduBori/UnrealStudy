@@ -384,22 +384,37 @@ namespace Algorithm
     {
         static void Main(string[] args)
         {
-            int[,] nodeConnection = new int[6, 6];
-            nodeConnection[0, 1] = 8;
-            nodeConnection[0, 2] = 1;
-            nodeConnection[0, 3] = 2;
-            nodeConnection[2, 1] = 5;
-            nodeConnection[2, 3] = 2;
-            nodeConnection[3, 4] = 3;
-            nodeConnection[3, 5] = 5;
-            nodeConnection[4, 5] = 1;
-            nodeConnection[5, 0] = 5;
+            //int[,] nodeConnection = new int[6, 6];
+            //nodeConnection[0, 1] = 8;
+            //nodeConnection[0, 2] = 1;
+            //nodeConnection[0, 3] = 2;
+            //nodeConnection[2, 1] = 5;
+            //nodeConnection[2, 3] = 2;
+            //nodeConnection[3, 4] = 3;
+            //nodeConnection[3, 5] = 5;
+            //nodeConnection[4, 5] = 1;
+            //nodeConnection[5, 0] = 5;
 
-            int[] result = DijkstraResult(nodeConnection, 0);
-            foreach(var number in result)
+            //int[] result = DijkstraResult(nodeConnection, 0);
+            //foreach(var number in result)
+            //{
+            //    Console.WriteLine(number);
+            //}
+            List<List<int>> arr = new List<List<int>>();
+            arr.Add(new List<int> { 11, 2, 4 });
+            arr.Add(new List<int> { 4, 5, 6 });
+            arr.Add(new List<int> { 10, 8, -12 });
+            int leftToRight = 0;
+            int rightToLeft = 0;
+            for (int index = 0; index < arr.Count; index++)
             {
-                Console.WriteLine(number);
+                leftToRight += arr[index][index];
             }
+            for (int index = arr.Count - 1; index >= 0; index--)
+            {
+                rightToLeft += arr[index][arr.Count -1 - index];
+            }
+            Console.WriteLine(Math.Abs(leftToRight - rightToLeft));
         }
 
         public static int[] DijkstraResult(int[,] connection, int startNode)
