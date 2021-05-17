@@ -1,12 +1,13 @@
+
 cbuffer TEST_B0 : register(b0)
 {
     float4 offset0;
-}
+};
 
 cbuffer TEST_B1 : register(b1)
 {
     float4 offset1;
-}
+};
 
 struct VS_IN
 {
