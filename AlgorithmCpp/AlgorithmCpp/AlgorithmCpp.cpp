@@ -1,7 +1,9 @@
 ﻿#include <iostream>
 #include <algorithm>
 #include <queue>
+#include <string>
 #include <vector>
+#include <set>
 using namespace std;
 #pragma region Prim Algorithm
 //class Edge
@@ -85,29 +87,98 @@ using namespace std;
 
 #pragma endregion
 
-vector<int> solution(vector<int> array, vector<vector<int>> commands) {
-    vector<int> answer;
-    for (int commandIndex = 0; commandIndex < commands.size(); commandIndex++)
+#pragma region Programmers
+//vector<int> solution(vector<int> array, vector<vector<int>> commands) {
+//    vector<int> answer;
+//    for (int commandIndex = 0; commandIndex < commands.size(); commandIndex++)
+//    {
+//        vector<int> tempVector;
+//        int startIndex = commands[commandIndex][0];
+//        int endIndex = commands[commandIndex][1];
+//        for (int index = startIndex - 1; index < endIndex; index++)
+//        {
+//            tempVector.push_back(array[index]);
+//        }
+//        sort(tempVector.begin(), tempVector.end(), less<int>());
+//        int selectIndex = commands[commandIndex][2];
+//        answer.push_back(tempVector[selectIndex - 1]);
+//    }
+//    return answer;
+//}
+//
+//int main()
+//{
+//    vector<int> answer = solution({ 1,5,2,6,3,7,4 }, { {2,5,3},{4,4,1},{1,7,3} });
+//    for (auto number : answer)
+//    {
+//        cout << number << endl;
+//    }
+//}
+#pragma endregion
+
+#pragma region Programmers Union-Find
+int findParent(int container[], int number)
+{
+    if (container[number] != number)
     {
-        vector<int> tempVector;
-        int startIndex = commands[commandIndex][0];
-        int endIndex = commands[commandIndex][1];
-        for (int index = startIndex - 1; index < endIndex; index++)
-        {
-            tempVector.push_back(array[index]);
-        }
-        sort(tempVector.begin(), tempVector.end(), less<int>());
-        int selectIndex = commands[commandIndex][2];
-        answer.push_back(tempVector[selectIndex- 1]);
+        container[number] = findParent(container, container[number]);
+        return container[number];
     }
+    return container[number];
+}
+
+void Union(int container[], int num1, int num2)
+{
+    int parent1 = findParent(container, num1);
+    int parent2 = findParent(container, num2);
+    if (parent1 > parent2)
+    {
+        container[parent1] = parent2;
+    }
+    else
+    {
+        container[parent2] = parent1;
+    }
+}
+
+int solution(int n, vector<vector<int>> computers)
+{
+    int answer = 0;
+    //Init parents
+    int* parents = new int[n];
+    for (int index = 0; index < n; index++)
+    {
+        parents[index] = index;
+    }
+
+
+    for (int index = 0; index < computers.size(); index++)
+    {
+        for (int vectorIndex = 0; vectorIndex < computers[index].size(); vectorIndex++)
+        {
+            if (computers[index][vectorIndex] == 1 && index != vectorIndex)
+            {
+                Union(parents, index, vectorIndex);
+            }
+        }
+    }
+    set<int> parentSet;
+    for (int index = 0; index < n; index++)
+    {
+        parents[index] = findParent(parents, index);
+        parentSet.insert(parents[index]);
+    }
+    answer = parentSet.size();
+    delete[] parents;
     return answer;
 }
 
 int main()
 {
-    vector<int> answer = solution({ 1,5,2,6,3,7,4 }, { {2,5,3},{4,4,1},{1,7,3} });
-    for (auto number : answer)
-    {
-        cout << number << endl;
-    }
+    cout << solution(3, { {1,1,0},{1,1,0},{0,0,1} });
+	return 0;
 }
+
+#pragma endregion
+
+
