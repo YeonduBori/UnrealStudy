@@ -117,68 +117,157 @@ using namespace std;
 #pragma endregion
 
 #pragma region Programmers Union-Find
-int findParent(int container[], int number)
-{
-    if (container[number] != number)
-    {
-        container[number] = findParent(container, container[number]);
-        return container[number];
-    }
-    return container[number];
-}
-
-void Union(int container[], int num1, int num2)
-{
-    int parent1 = findParent(container, num1);
-    int parent2 = findParent(container, num2);
-    if (parent1 > parent2)
-    {
-        container[parent1] = parent2;
-    }
-    else
-    {
-        container[parent2] = parent1;
-    }
-}
-
-int solution(int n, vector<vector<int>> computers)
-{
-    int answer = 0;
-    //Init parents
-    int* parents = new int[n];
-    for (int index = 0; index < n; index++)
-    {
-        parents[index] = index;
-    }
-
-
-    for (int index = 0; index < computers.size(); index++)
-    {
-        for (int vectorIndex = 0; vectorIndex < computers[index].size(); vectorIndex++)
-        {
-            if (computers[index][vectorIndex] == 1 && index != vectorIndex)
-            {
-                Union(parents, index, vectorIndex);
-            }
-        }
-    }
-    set<int> parentSet;
-    for (int index = 0; index < n; index++)
-    {
-        parents[index] = findParent(parents, index);
-        parentSet.insert(parents[index]);
-    }
-    answer = parentSet.size();
-    delete[] parents;
-    return answer;
-}
-
-int main()
-{
-    cout << solution(3, { {1,1,0},{1,1,0},{0,0,1} });
-	return 0;
-}
+//int findParent(int container[], int number)
+//{
+//    if (container[number] != number)
+//    {
+//        container[number] = findParent(container, container[number]);
+//        return container[number];
+//    }
+//    return container[number];
+//}
+//
+//void Union(int container[], int num1, int num2)
+//{
+//    int parent1 = findParent(container, num1);
+//    int parent2 = findParent(container, num2);
+//    if (parent1 > parent2)
+//    {
+//        container[parent1] = parent2;
+//    }
+//    else
+//    {
+//        container[parent2] = parent1;
+//    }
+//}
+//
+//int solution(int n, vector<vector<int>> computers)
+//{
+//    int answer = 0;
+//    //Init parents
+//    int* parents = new int[n];
+//    for (int index = 0; index < n; index++)
+//    {
+//        parents[index] = index;
+//    }
+//
+//
+//    for (int index = 0; index < computers.size(); index++)
+//    {
+//        for (int vectorIndex = 0; vectorIndex < computers[index].size(); vectorIndex++)
+//        {
+//            if (computers[index][vectorIndex] == 1 && index != vectorIndex)
+//            {
+//                Union(parents, index, vectorIndex);
+//            }
+//        }
+//    }
+//    set<int> parentSet;
+//    for (int index = 0; index < n; index++)
+//    {
+//        parents[index] = findParent(parents, index);
+//        parentSet.insert(parents[index]);
+//    }
+//    answer = parentSet.size();
+//    delete[] parents;
+//    return answer;
+//}
+//
+//int main()
+//{
+//    cout << solution(3, { {1,1,0},{1,1,0},{0,0,1} });
+//	return 0;
+//}
 
 #pragma endregion
 
 
+
+//int main()
+//{
+//	int numbers[8] = { 0, };
+//	
+//	for (int number = 0; number < 8; number++)
+//	{
+//		cin >> numbers[number];
+//	}
+//
+//	if (numbers[0] == 1)
+//	{
+//		for (int number = 1; number < 8; number++)
+//		{
+//			if (numbers[number - 1] > numbers[number])
+//			{
+//				cout << "mixed";
+//				return 0;
+//			}
+//		}
+//		cout << "ascending";
+//	}
+//	else if (numbers[0] == 8)
+//	{
+//		for (int number = 1; number < 8; number++)
+//		{
+//			if (numbers[number - 1] < numbers[number])
+//			{
+//				cout << "mixed";
+//				return 0;
+//			}
+//		}
+//		cout << "descending";
+//	}
+//	else
+//	{
+//		cout << "mixed";
+//	}
+//	return 0;
+//}
+
+int main()
+{
+	int totalCard = 0;
+	int totalSum = 0;
+
+	cin >> totalCard;
+	cin >> totalSum;
+
+	int* cards = new int[totalCard];
+	
+	for (int count = 0; count < totalCard; count++)
+	{
+		cin >> cards[count];
+	}
+
+	int nearSum = -100;
+	// Init end
+	//Logic
+	for (int index = 0; index < totalCard; index++)
+	{
+		int localSum = cards[index];
+		for (int secIndex = index + 1; secIndex < totalCard; secIndex++)
+		{
+			localSum += cards[secIndex];
+			for (int thirdIndex = secIndex + 1; thirdIndex < totalCard; thirdIndex++)
+			{
+				localSum += cards[thirdIndex];
+				if (localSum <= totalSum && nearSum < localSum)
+				{
+					nearSum = localSum;
+				}
+				localSum -= cards[thirdIndex];
+			}
+			localSum -= cards[secIndex];
+		}
+	}
+	cout << nearSum;
+
+	// Clear Memory
+	if (cards != nullptr)
+	{
+		delete[] cards;
+		cards = nullptr;
+	}
+
+
+	return 0;
+}
