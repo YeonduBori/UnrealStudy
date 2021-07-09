@@ -1,8 +1,10 @@
 ﻿#include <iostream>
 #include <algorithm>
 #include <queue>
+#include <stack>
 #include <string>
 #include <vector>
+#include <deque>
 #include <set>
 using namespace std;
 #pragma region Prim Algorithm
@@ -223,51 +225,214 @@ using namespace std;
 //	return 0;
 //}
 
+//int main()
+//{
+//	int totalCard = 0;
+//	int totalSum = 0;
+//
+//	cin >> totalCard;
+//	cin >> totalSum;
+//
+//	int* cards = new int[totalCard];
+//	
+//	for (int count = 0; count < totalCard; count++)
+//	{
+//		cin >> cards[count];
+//	}
+//
+//	int nearSum = -100;
+//	// Init end
+//	//Logic
+//	for (int index = 0; index < totalCard; index++)
+//	{
+//		int localSum = cards[index];
+//		for (int secIndex = index + 1; secIndex < totalCard; secIndex++)
+//		{
+//			localSum += cards[secIndex];
+//			for (int thirdIndex = secIndex + 1; thirdIndex < totalCard; thirdIndex++)
+//			{
+//				localSum += cards[thirdIndex];
+//				if (localSum <= totalSum && nearSum < localSum)
+//				{
+//					nearSum = localSum;
+//				}
+//				localSum -= cards[thirdIndex];
+//			}
+//			localSum -= cards[secIndex];
+//		}
+//	}
+//	cout << nearSum;
+//
+//	// Clear Memory
+//	if (cards != nullptr)
+//	{
+//		delete[] cards;
+//		cards = nullptr;
+//	}
+//
+//
+//	return 0;
+//}
+
+//스택 수열 백준
+//int main()
+//{
+//	int n = 0;
+//	cin >> n;
+//	int* seq = new int[n];
+//	for (int i = 0; i < n; i++)
+//	{
+//		cin >> seq[i]; // 수열 입력
+//	}
+//	vector<char> ans;
+//	stack<int> v;
+//	int cnt = 0;
+//
+//	for (int i = 1; i <= n; i++)
+//	{
+//		v.push(i);
+//		ans.push_back('+');
+//
+//		// 벡터가 비어있지않고,  cnt번째 수열이 벡터의 마지막 원소와 같을경우
+//		while (!v.empty() && v.top() == seq[cnt])
+//		{
+//			v.pop();
+//			ans.push_back('-');
+//			cnt++;
+//		}
+//	}
+//
+//	if (!v.empty()) cout << "NO"; // 수열이 만들어졌다면 벡터가 비어있어야 하므로.
+//	else for (int i = 0; i < ans.size(); i++) cout << ans[i] << endl;
+//
+//	return 0;
+//}
+
+//class Document
+//{
+//public:
+//	int important;
+//	int index;
+//	Document();
+//	Document(int index, int important) : index(index), important(important)
+//	{
+//
+//	}
+//};
+//
+////프린터 큐
+//int main()
+//{
+//	int testCase = 0;
+//	cin >> testCase;
+//	for (int index = 0; index < testCase; index++)
+//	{
+//		//cout << "Test Case " << index + 1 << endl;
+//		int numberDocu = 0;
+//		int targetDocu = -1;
+//		//cout << "Number of Document Input" << endl;
+//		cin >> numberDocu;
+//		//cout << "Target Document Number Input" << endl;
+//		cin >> targetDocu;
+//		//중요도 들어옴
+//		deque<Document> printerQueue;
+//		for (int docNum = 0; docNum < numberDocu; docNum++)
+//		{
+//			int important = 0;
+//			//cout << "Document Number" << docNum << " important Input" << endl;
+//			cin >> important;
+//			printerQueue.push_back(Document(docNum, important));
+//		}
+//
+//		while (!printerQueue.empty())
+//		{
+//			int current = printerQueue.front().important;
+//			auto it = printerQueue.begin() + 1;
+//			for (;it != printerQueue.end(); it++)
+//			{
+//				if ((*it).important > current)
+//				{
+//					break;
+//				}
+//			}
+//			
+//			if (it != printerQueue.end())
+//			{
+//				printerQueue.push_back(printerQueue.front());
+//				printerQueue.pop_front();
+//			}
+//			else
+//			{
+//				if (printerQueue.front().index == targetDocu)
+//				{
+//					int queueSize = printerQueue.size();
+//					cout <<  numberDocu - queueSize + 1 << endl;
+//					break;
+//				}
+//				printerQueue.pop_front();
+//			}
+//		}
+//
+//	}
+//	return 0;
+//}
+
+//키로거 백준
 int main()
 {
-	int totalCard = 0;
-	int totalSum = 0;
-
-	cin >> totalCard;
-	cin >> totalSum;
-
-	int* cards = new int[totalCard];
-	
-	for (int count = 0; count < totalCard; count++)
+	int testCase = 0;
+	cin >> testCase;
+	for (int count = 0; count < testCase; count++)
 	{
-		cin >> cards[count];
-	}
-
-	int nearSum = -100;
-	// Init end
-	//Logic
-	for (int index = 0; index < totalCard; index++)
-	{
-		int localSum = cards[index];
-		for (int secIndex = index + 1; secIndex < totalCard; secIndex++)
+		stack<char> prev;
+		stack<char> next;
+		string input;
+		cin >> input;
+		
+		for (int index = 0; index < input.size(); index++)
 		{
-			localSum += cards[secIndex];
-			for (int thirdIndex = secIndex + 1; thirdIndex < totalCard; thirdIndex++)
+			switch (input[index])
 			{
-				localSum += cards[thirdIndex];
-				if (localSum <= totalSum && nearSum < localSum)
+			case '<':
+				if (!next.empty())
 				{
-					nearSum = localSum;
+					prev.push(next.top());
+					next.pop();
 				}
-				localSum -= cards[thirdIndex];
+				break;
+			case '>':
+				if (!prev.empty())
+				{
+					next.push(prev.top());
+					prev.pop();
+				}
+				break;
+			case '-':
+				if (!next.empty())
+				{
+					next.pop();
+				}
+				break;
+			default:
+				next.push(input[index]);
+				break;
 			}
-			localSum -= cards[secIndex];
 		}
+		while (!next.empty())
+		{
+			prev.push(next.top());
+			next.pop();
+		}
+		vector<char> result;
+		while (!prev.empty())
+		{
+			result.push_back(prev.top());
+			prev.pop();
+		}
+		for (int index = 0; index < result.size(); index++)
+		{
+			cout << result[index];
+		}
+		cout << endl;
 	}
-	cout << nearSum;
-
-	// Clear Memory
-	if (cards != nullptr)
-	{
-		delete[] cards;
-		cards = nullptr;
-	}
-
-
-	return 0;
 }
