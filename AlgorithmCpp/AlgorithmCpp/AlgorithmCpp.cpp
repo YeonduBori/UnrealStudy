@@ -378,61 +378,147 @@ using namespace std;
 //}
 
 //키로거 백준
-int main()
+//int main()
+//{
+//	int testCase = 0;
+//	cin >> testCase;
+//	for (int count = 0; count < testCase; count++)
+//	{
+//		stack<char> prev;
+//		stack<char> next;
+//		string input;
+//		cin >> input;
+//		
+//		for (int index = 0; index < input.size(); index++)
+//		{
+//			switch (input[index])
+//			{
+//			case '<':
+//				if (!next.empty())
+//				{
+//					prev.push(next.top());
+//					next.pop();
+//				}
+//				break;
+//			case '>':
+//				if (!prev.empty())
+//				{
+//					next.push(prev.top());
+//					prev.pop();
+//				}
+//				break;
+//			case '-':
+//				if (!next.empty())
+//				{
+//					next.pop();
+//				}
+//				break;
+//			default:
+//				next.push(input[index]);
+//				break;
+//			}
+//		}
+//		while (!next.empty())
+//		{
+//			prev.push(next.top());
+//			next.pop();
+//		}
+//		vector<char> result;
+//		while (!prev.empty())
+//		{
+//			result.push_back(prev.top());
+//			prev.pop();
+//		}
+//		for (int index = 0; index < result.size(); index++)
+//		{
+//			cout << result[index];
+//		}
+//		cout << endl;
+//	}
+//}
+
+#pragma region 강의 기본 정렬
+//int main()
+//{
+//	int N = 0;
+//	cin >> N;
+//	vector<int> numbers;
+//	for (int number = 0; number < N; number++)
+//	{
+//		int input = 0;
+//		cin >> input;
+//		numbers.push_back(input);
+//	}
+//	sort(numbers.begin(), numbers.end(), less<int>());
+//	for (int number : numbers)
+//	{
+//		cout << number << endl;
+//	}
+//	return 0;
+//}
+
+//소트인사이드
+//int main()
+//{
+//	int N = 0;
+//	cin >> N;
+//	vector<int> container;
+//	while (N != 0)
+//	{
+//		container.push_back(N % 10);
+//		N /= 10;
+//	}
+//	sort(container.begin(), container.end(), greater<int>());
+//	for (int num : container)
+//		cout << num;
+//	return 0;
+//}
+
+//나이순정렬
+class Member
 {
-	int testCase = 0;
-	cin >> testCase;
-	for (int count = 0; count < testCase; count++)
+public:
+	string name;
+	int age;
+	int inputOrder;
+public:
+	Member(string name, int age, int order) :name(name), age(age), inputOrder(order)
 	{
-		stack<char> prev;
-		stack<char> next;
-		string input;
-		cin >> input;
-		
-		for (int index = 0; index < input.size(); index++)
-		{
-			switch (input[index])
-			{
-			case '<':
-				if (!next.empty())
-				{
-					prev.push(next.top());
-					next.pop();
-				}
-				break;
-			case '>':
-				if (!prev.empty())
-				{
-					next.push(prev.top());
-					prev.pop();
-				}
-				break;
-			case '-':
-				if (!next.empty())
-				{
-					next.pop();
-				}
-				break;
-			default:
-				next.push(input[index]);
-				break;
-			}
-		}
-		while (!next.empty())
-		{
-			prev.push(next.top());
-			next.pop();
-		}
-		vector<char> result;
-		while (!prev.empty())
-		{
-			result.push_back(prev.top());
-			prev.pop();
-		}
-		for (int index = 0; index < result.size(); index++)
-		{
-			cout << result[index];
-		}
-		cout << endl;
+
+	}
+};
+
+bool CompareMember(const Member& m1, const Member& m2)
+{
+	if (m1.age != m2.age)
+	{
+		return m1.age < m2.age;
+	}
+	else
+	{
+		return m1.inputOrder < m2.inputOrder;
 	}
 }
+
+int main()
+{
+	int memberN = 0;
+	cin >> memberN;
+	vector<Member> members;
+	for (int index = 0; index < memberN; index++)
+	{
+		int age = 0;
+		string name;
+		cin >> age >> name;
+		members.push_back(Member(name, age, index));
+	}
+
+	sort(members.begin(), members.end(), CompareMember);
+	
+	for (Member member : members)
+	{
+		cout << member.age << ' ' << member.name << endl;
+	}
+	return 0;
+}
+#pragma endregion
